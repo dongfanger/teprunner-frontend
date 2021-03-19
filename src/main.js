@@ -18,6 +18,9 @@ Vue.prototype.$handleResponese = onResponse;
 import Pagination from "@/components/Pagination";
 Vue.component("vue-pagination", Pagination);
 
+import Highlight from "@/assets/js/highlight.js";
+Vue.use(Highlight);
+
 Vue.config.productionTip = false;
 
 Vue.use(Element);

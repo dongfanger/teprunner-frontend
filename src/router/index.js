@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import login from "@/views/login";
 import home from "@/views/home";
 import console from "@/views/console";
+import teprunner from "@/views/teprunner";
 
 Vue.use(VueRouter);
 
@@ -21,8 +22,40 @@ const routes = [
       requireAuth: true,
     },
     component: home,
-    redirect: "console/userManagement",
+    redirect: "teprunner/grammar",
     children: [
+      {
+        path: "teprunner",
+        name: "teprunner",
+        meta: {
+          title: "接口自动化",
+        },
+        component: teprunner,
+        redirect: "teprunner/grammar",
+        children: [
+          {
+            path: "grammar",
+            meta: {
+              title: "语法说明",
+            },
+            component: () => import("@/views/teprunner/Grammar.vue"),
+          },
+          {
+            path: "envVar",
+            meta: {
+              title: "环境变量",
+            },
+            component: () => import("@/views/teprunner/EnvVar.vue"),
+          },
+          {
+            path: "fixture",
+            meta: {
+              title: "fixture",
+            },
+            component: () => import("@/views/teprunner/Fixture.vue"),
+          },
+        ],
+      },
       {
         path: "console",
         name: "console",
@@ -38,6 +71,13 @@ const routes = [
               title: "用户管理",
             },
             component: () => import("@/views/console/userManagement.vue"),
+          },
+          {
+            path: "projectManagement",
+            meta: {
+              title: "项目管理",
+            },
+            component: () => import("@/views/console/ProjectManagement.vue"),
           },
         ],
       },

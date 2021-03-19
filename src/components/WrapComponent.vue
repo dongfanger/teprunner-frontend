@@ -1,5 +1,6 @@
 <template>
   <div class="page-wrap">
+    <div><slot name="projectEnv"></slot></div>
     <div class="control-list" v-if="showOperateCont">
       <slot name="operate"></slot>
     </div>
