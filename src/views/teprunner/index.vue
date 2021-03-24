@@ -13,6 +13,10 @@
         <i class="el-icon-magic-stick"></i>
         <span slot="title">fixtures</span>
       </el-menu-item>
+      <el-menu-item index="/teprunner/case">
+        <i class="el-icon-edit-outline"></i>
+        <span slot="title">用例管理</span>
+      </el-menu-item>
     </div>
   </NavLeft>
 </template>

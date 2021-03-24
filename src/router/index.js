@@ -54,6 +54,13 @@ const routes = [
             },
             component: () => import("@/views/teprunner/Fixture.vue"),
           },
+          {
+            path: "case",
+            meta: {
+              title: "用例管理",
+            },
+            component: () => import("@/views/teprunner/case/CaseManagement.vue"),
+          },
         ],
       },
       {

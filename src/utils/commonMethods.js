@@ -67,3 +67,13 @@ export function notifyMessage(message, options = {}) {
     ...options,
   });
 }
+
+export function resultColor(res) {
+  if (res.indexOf("error") !== -1) {
+    return "red";
+  } else if (res.indexOf("failed") !== -1) {
+    return "rgb(236,76,71)";
+  } else if (res.indexOf("passed") !== -1) {
+    return "rgb(0,153,117)";
+  }
+}
