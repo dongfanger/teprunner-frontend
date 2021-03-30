@@ -92,6 +92,7 @@ export default {
         runUserNickname: "",
         runTime: "",
       },
+      socket: null,
     };
   },
   computed: {
@@ -102,7 +103,11 @@ export default {
   watch: {
     caseResultDialogFormVisible(val) {
       if (val && this.id) {
-        this.getDetail();
+        if (this.caseResultType === "run") {
+          this.runCase();
+        } else if (this.caseResultType === "view") {
+          this.getResult();
+        }
       }
     },
   },
@@ -128,21 +133,10 @@ export default {
       this.caseForm.runTime = "";
       this.$emit("update:caseResultDialogFormVisible", false);
     },
-    getDetail() {
-      this.$http.get(`/teprunner/cases/${this.id}`).then(({ data }) => {
-        this.caseForm.desc = data.desc;
-        this.caseForm.creatorNickname = data.creatorNickname;
-      });
-      if (this.caseResultType === "run") {
-        this.runCase();
-      } else if (this.caseResultType === "view") {
-        this.getResult();
-      }
-    },
     runCase() {
       this.caseForm.result = "";
       this.caseForm.elapsed = "";
-      this.caseForm.output = "用例运行中...";
+      this.caseForm.output = "";
       this.caseForm.runTime = "";
       let curProjectEnv = JSON.parse(localStorage.getItem("curProjectEnv"));
       let runEnv = curProjectEnv.curEnvName;
@@ -155,34 +149,56 @@ export default {
       };
       this.$http
         .post(`/teprunner/cases/${this.id}/run`, params)
-        .then(({ data: { result, elapsed, output, runEnv, runUserNickname, runTime } }) => {
-          this.caseForm.result = result;
-          this.caseForm.elapsed = elapsed;
-          this.caseForm.output = output + "\n";
-          this.caseForm.runEnv = runEnv;
-          this.caseForm.runUserNickname = runUserNickname;
-          this.caseForm.runTime = runTime;
+        .then(({ data: { msg } }) => {
+          this.$notifyMessage(msg, { type: "success" });
+          this.getResult();
         })
         .finally(() => {});
     },
     getResult() {
-      this.$http.get(`/teprunner/cases/${this.id}/result`).then(({ data }) => {
-        this.caseForm.result = data.result;
-        this.caseForm.elapsed = data.elapsed;
-        this.caseForm.output = data.output + "\n";
-        this.caseForm.runEnv = data.runEnv;
-        this.caseForm.runUserNickname = data.runUserNickname;
-        this.caseForm.runTime = data.runTime;
-      });
+      const _this = this;
+      if (typeof WebSocket == "undefined") {
+        this.$notifyMessage("当前浏览器不支持WebSocket，请使用谷歌浏览器！", { type: "warning" });
+      } else {
+        const socketUrl = `${process.env.VUE_APP_wsServer}/ws/teprunner/cases/${this.id}/result/`;
+        this.socket = new WebSocket(socketUrl);
+        this.socket.onopen = function() {
+          // console.log("WebSocket Open");
+          _this.socket.send(
+            JSON.stringify({
+              token: localStorage.getItem("token"),
+            }),
+          );
+        };
+        this.socket.onmessage = ({ data }) => {
+          data = JSON.parse(data);
+          _this.caseForm.desc = data.desc;
+          _this.caseForm.creatorNickname = data.creatorNickname;
+          _this.caseForm.result = data.result;
+          _this.caseForm.elapsed = data.elapsed;
+          _this.caseForm.output = data.output + "\n";
+          _this.caseForm.runEnv = data.runEnv;
+          _this.caseForm.runUserNickname = data.runUserNickname;
+          _this.caseForm.runTime = data.runTime;
+        };
+        this.socket.onerror = function() {
+          _this.$notifyMessage("WebSocket Error", { type: "error" });
+        };
+        this.socket.onclose = function() {
+          // console.log("WebSocket Close");
+        };
+      }
     },
     getResultColor(res) {
       return resultColor(res);
     },
     close() {
+      this.socket.close();
       this.onResetForm();
       this.$emit("onCloseCaseResult");
     },
     cancel() {
+      this.socket.close();
       this.$emit("update:caseResultDialogFormVisible", false);
     },
     onEditCase() {

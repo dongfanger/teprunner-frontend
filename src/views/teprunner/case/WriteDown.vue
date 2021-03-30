@@ -72,13 +72,11 @@ export default {
     download() {
       this.loading = true;
       let curProjectEnv = JSON.parse(localStorage.getItem("curProjectEnv"));
-      this.curProjectId = curProjectEnv.curProjectId;
       let params = {
-        curProjectId: this.curProjectId,
         curEnvName: curProjectEnv.curEnvName,
       };
       this.$http
-        .post(`/teprunner/projects/${this.curProjectId}/export`, params, { responseType: "blob" })
+        .post(`/teprunner/projects/${curProjectEnv.curProjectId}/export`, params, { responseType: "blob" })
         .then(res => {
           let blob = new Blob([res.data], { type: "application/zip" });
           let url = window.URL.createObjectURL(blob);

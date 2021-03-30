@@ -18,7 +18,7 @@ module.exports = {
     proxy: {
       "/api": {
         // target: "https://bf80bb80-b543-422e-b05c-28350a90c0aa.mock.pstmn.io",
-        target: "http://127.0.0.1:8000/",
+        target: process.env.VUE_APP_apiServer,
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/api",
