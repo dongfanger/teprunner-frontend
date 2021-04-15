@@ -61,6 +61,58 @@ const routes = [
             },
             component: () => import("@/views/teprunner/case/CaseManagement.vue"),
           },
+          {
+            path: "plan",
+            name: "plan",
+            meta: {
+              title: "测试计划",
+            },
+            component: () => import("@/views/teprunner/plan/PlanManagement.vue"),
+            children: [
+              {
+                path: "addPlan",
+                name: "addPlan",
+                meta: {
+                  title: "添加计划",
+                },
+                component: () => import("@/views/teprunner/plan/PlanEditor"),
+              },
+              {
+                path: "editPlan",
+                name: "editPlan",
+                meta: {
+                  title: "编辑计划",
+                },
+                component: () => import("@/views/teprunner/plan/PlanEditor"),
+              },
+              {
+                path: "caseList",
+                name: "caseList",
+                meta: {
+                  title: "用例列表",
+                },
+                component: () => import("@/views/teprunner/plan/CaseList"),
+              },
+              {
+                path: "planResult",
+                name: "planResult",
+                meta: {
+                  title: "计划运行结果",
+                },
+                component: () => import("@/views/teprunner/plan/PlanResult"),
+                children: [
+                  {
+                    path: "caseResult",
+                    name: "caseResult",
+                    meta: {
+                      title: "用例运行结果",
+                    },
+                    component: () => import("@/views/teprunner/plan/CaseResult"),
+                  },
+                ],
+              },
+            ],
+          },
         ],
       },
       {

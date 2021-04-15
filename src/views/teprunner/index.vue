@@ -17,6 +17,10 @@
         <i class="el-icon-edit-outline"></i>
         <span slot="title">用例管理</span>
       </el-menu-item>
+      <el-menu-item index="/teprunner/plan">
+        <i class="el-icon-alarm-clock"></i>
+        <span slot="title">测试计划</span>
+      </el-menu-item>
     </div>
   </NavLeft>
 </template>

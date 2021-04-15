@@ -8,7 +8,18 @@
       :close-on-click-modal="false"
       @close="onCancel(selectedItem)"
     >
-      <div class="select-panel-list-box" v-loading="loading">
+      <div class="select-panel-list-box" :loading="loading">
+        <div class="search-box clear">
+          <span class="self-left select-panel-num">{{ total }}项</span>
+          <el-input
+            size="small"
+            :placeholder="placeholder"
+            class="self-right select-panel-info-input"
+            prefix-icon="el-icon-search"
+            v-model="searchInfo"
+            @keyup.enter.native="emitDataChange('search')"
+          ></el-input>
+        </div>
         <el-table
           ref="table"
           height="305px"
