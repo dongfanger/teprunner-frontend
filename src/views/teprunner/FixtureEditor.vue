@@ -1,93 +1,59 @@
 <template>
-  <div class="page-wrap">
-    <el-dialog
-      :title="dialogTitle"
-      :visible="visible"
-      width="70%"
-      style="margin-left: 5%; margin-top: -5%;"
-      :close-on-click-modal="false"
-      @close="onResetForm"
+  <div style="clear: both;" class="content-info">
+    <el-form
+      :model="fixtureForm"
+      ref="fixtureFormRef"
+      :rules="rules"
+      label-width="100px"
+      class="form-common"
+      :inline="true"
     >
-      <el-form
-        :model="fixtureForm"
-        ref="fixtureFormRef"
-        :rules="rules"
-        label-width="100px"
-        class="form-common"
-        :inline="true"
-      >
-        <el-form-item label="名称" prop="name">
-          <el-input
-            v-model="fixtureForm.name"
-            placeholder="请输入 fixture 名称"
-            :rows="1"
-            style="width: 300px"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="说明" prop="desc">
-          <el-input
-            v-model="fixtureForm.desc"
-            placeholder="请输入 fixture 说明"
-            :rows="1"
-            style="width: 700px"
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <editor
-        v-model="fixtureForm.code"
-        @init="editorInit"
-        lang="python"
-        theme="monokai"
-        width="100%"
-        :height="codeHeight"
-        :options="{
-          enableSnippets: true,
-          enableBasicAutocompletion: true,
-          enableLiveAutocompletion: true,
-        }"
-      ></editor>
-      <div slot="footer" class="dialog-footer">
+      <el-form-item label="名称" prop="name">
+        <el-input
+          v-model="fixtureForm.name"
+          placeholder="请输入 fixture 名称"
+          :rows="1"
+          style="width: 300px;"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="说明" prop="desc">
+        <el-input
+          v-model="fixtureForm.desc"
+          placeholder="请输入 fixture 说明"
+          :rows="1"
+          style="width: 350px"
+        ></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button style="margin-left: 30px" type="primary" @click="onSubmit" :loading="isLoading">保 存</el-button>
+      </el-form-item>
+      <el-form-item>
         <el-button @click="onResetForm">取 消</el-button>
-        <el-button type="primary" @click="onSubmit" :loading="isLoading">保 存</el-button>
-      </div>
-    </el-dialog>
+      </el-form-item>
+    </el-form>
+    <editor
+      v-model="fixtureForm.code"
+      @init="editorInit"
+      lang="python"
+      theme="monokai"
+      width="100%"
+      :height="codeHeight"
+      :options="{
+        enableSnippets: true,
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+      }"
+    ></editor>
   </div>
 </template>
-
 <script>
 export default {
-  name: "AddFixture",
-  props: {
-    dialogTitle: {
-      type: String,
-      default: "新增",
-    },
-    dialogFormVisible: {
-      type: Boolean,
-      default: false,
-    },
-    id: {
-      default: "",
-    },
-  },
-  computed: {
-    visible() {
-      return this.dialogFormVisible;
-    },
-  },
-  watch: {
-    dialogFormVisible(val) {
-      if (val && this.id) {
-        this.getDetail();
-      }
-    },
-  },
   components: {
     editor: require("vue2-ace-editor"),
   },
   data() {
     return {
-      codeHeight: 700,
+      codeHeight: window.innerHeight - 225,
       isLoading: false,
       fixtureForm: {
         name: "",
@@ -98,7 +64,18 @@ export default {
         name: [{ required: true, message: "名称不能为空", trigger: "blur" }],
         desc: [{ required: true, message: "说明不能为空", trigger: "blur" }],
       },
+      id: null,
     };
+  },
+  created() {
+    let fixtureInfo = localStorage.getItem("fixtureInfo");
+    if (fixtureInfo) {
+      fixtureInfo = JSON.parse(fixtureInfo);
+      this.id = fixtureInfo.id;
+    }
+    if (this.id) {
+      this.getDetail();
+    }
   },
   methods: {
     editorInit() {
@@ -113,7 +90,7 @@ export default {
       this.fixtureForm.name = "";
       this.fixtureForm.desc = "";
       this.fixtureForm.code = "";
-      this.$emit("update:dialogFormVisible", false);
+      this.back();
     },
     getDetail() {
       this.$http.get(`/teprunner/fixtures/${this.id}`).then(({ data }) => {
@@ -153,22 +130,18 @@ export default {
         .then(() => {
           this.$notifyMessage("保存成功", { type: "success" });
           this.onResetForm();
-          this.$emit("success");
         })
         .finally(() => {
           this.isLoading = false;
         });
     },
+    back() {
+      this.$router.go(-1);
+    },
   },
 };
 </script>
-
-<style scoped lang="scss">
-.role-list {
-  ::v-deep.el-tag {
-    margin-bottom: 15px;
-  }
-}
+<style lang="scss" scoped>
 .ace_editor {
   position: relative;
   overflow: hidden;

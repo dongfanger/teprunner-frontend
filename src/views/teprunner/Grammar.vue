@@ -11,7 +11,9 @@
       </h3>
       <br />
       <p>
-        key-value字符串，通过env_vars.name引用。
+        key-value字符串，通过env_vars.name引用。比如域名：
+        <br />
+        变量名domain，变量值https://qa.com
       </p>
       <br />
       <h3>
@@ -19,8 +21,44 @@
       </h3>
       <br />
       <p>
-        依赖注入函数，封装API等，供测试用例调用。
+        依赖注入函数，封装API等，供测试用例调用。比如登录接口：
+        <br />
       </p>
+      <pre v-highlightA><code >from tep.client import request
+from tep.fixture import *
+
+
+def _jwt_headers(token):
+    return {"Content-Type": "application/json", "authorization": f"Bearer {token}"}
+
+
+@pytest.fixture(scope="session")
+def login(url):
+    # Code your login
+    logger.info("Administrator login")
+    response = request(
+        "post",
+        url=url("/api/users/login"),
+        headers={"Content-Type": "application/json"},
+        json={
+            "username": "dongfanger",
+            "password": "123",
+        }
+    )
+    assert response.status_code &#60; 400
+    response_token = jmespath.search("token", response.json())
+    super_admin_id = jmespath.search("user.id", response.json())
+
+    class Clazz:
+        token = response_token
+        jwt_headers = _jwt_headers(response_token)
+        admin_id = super_admin_id
+
+    return Clazz
+      </code></pre>
+      <br />
+      其中url是个fixture，返回环境变量env_vars.domain+入参api_path拼接后的完整url。
+      <br />
       <br />
       <h3>
         <span style="background-color:#FFE500;">用例示例</span>

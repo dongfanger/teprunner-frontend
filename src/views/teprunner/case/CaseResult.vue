@@ -1,87 +1,58 @@
 <template>
-  <div class="page-wrap">
-    <el-dialog
-      :title="caseResultDialogTitle"
-      :visible="visible"
-      width="90%"
-      style="margin-left: 5%; margin-top: -6%; margin-bottom: -5%"
-      :close-on-click-modal="false"
-      @close="close"
-    >
-      <el-form :model="caseForm" ref="caseFormRef" label-width="100px" class="form-common" :inline="true">
-        <el-form-item label="用例描述:" style="margin-top: -20px">
-          <span>{{ this.caseForm.desc }}</span>
-        </el-form-item>
-        <div style="margin-top: -30px; margin-left: -14px">
-          <el-form-item label="创建人:">
-            <span>{{ this.caseForm.creatorNickname }}</span>
-          </el-form-item>
-          <el-form-item label="运行结果:">
-            <span
-              :style="{
-                color: this.getResultColor(this.caseForm.result),
-                fontWeight: 700,
-              }"
-            >
-              {{ this.caseForm.result }}
-            </span>
-          </el-form-item>
-          <el-form-item label="运行耗时:">
-            <span>{{ this.caseForm.elapsed }}</span>
-          </el-form-item>
-          <el-form-item label="运行环境:">
-            <span>{{ this.caseForm.runEnv }}</span>
-          </el-form-item>
-          <el-form-item label="运行人:">
-            <span>{{ this.caseForm.runUserNickname }}</span>
-          </el-form-item>
-          <el-form-item label="运行时间:">
-            <span>{{ this.caseForm.runTime }}</span>
-          </el-form-item>
-        </div>
-      </el-form>
-      <editor
-        :value="this.caseForm.output"
-        @init="editorInit"
-        lang="text"
-        theme="monokai"
-        width="100%"
-        :height="codeHeight"
-      ></editor>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="onEditCase" :loading="isLoading">编辑用例</el-button>
-        <el-button @click="cancel">取 消</el-button>
+  <div>
+    <div class="content-info">
+      <div class="content-header">
+        <div class="info-name">用例运行结果</div>
       </div>
-    </el-dialog>
+      <div class="case-info-list">
+        <div class="info-txt clear">
+          <span class="label">用例描述：</span>
+          {{ this.caseForm.desc }}
+          <el-button style="float: right;" type="primary" @click="onEditCase">编辑用例</el-button>
+          <br />
+          <p>
+            <span class="label">创建人：</span>
+            {{ this.caseForm.creatorNickname }}
+          </p>
+          <p>
+            <span class="label">运行结果：</span>
+            {{ this.caseForm.result }}
+          </p>
+          <p>
+            <span class="label">运行耗时：</span>
+            {{ this.caseForm.elapsed }}
+          </p>
+          <p>
+            <span class="label">运行环境：</span>
+            {{ this.caseForm.runEnv }}
+          </p>
+          <p>
+            <span class="label">运行人：</span>
+            {{ this.caseForm.runUserNickname }}
+          </p>
+          <p>
+            <span class="label">运行时间：</span>
+            {{ this.caseForm.runTime }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <editor
+      :value="this.caseForm.output"
+      @init="editorInit"
+      lang="text"
+      theme="monokai"
+      width="100%"
+      :height="codeHeight"
+    ></editor>
   </div>
 </template>
-
 <script>
-import { resultColor } from "@/utils/commonMethods";
-
 export default {
   name: "CaseResult",
-  props: {
-    caseResultDialogTitle: {
-      type: String,
-      default: "",
-    },
-    caseResultDialogFormVisible: {
-      type: Boolean,
-      default: false,
-    },
-    id: {
-      default: "",
-    },
-    caseResultType: {
-      type: String,
-      default: "",
-    },
-  },
   data() {
     return {
-      codeHeight: 680,
-      isLoading: false,
+      codeHeight: window.innerHeight - 315,
       caseForm: {
         desc: "",
         creatorNickname: "",
@@ -93,26 +64,26 @@ export default {
         runTime: "",
       },
       socket: null,
+      id: null,
+      caseInfo: null,
     };
-  },
-  computed: {
-    visible() {
-      return this.caseResultDialogFormVisible;
-    },
-  },
-  watch: {
-    caseResultDialogFormVisible(val) {
-      if (val && this.id) {
-        if (this.caseResultType === "run") {
-          this.runCase();
-        } else if (this.caseResultType === "view") {
-          this.getResult();
-        }
-      }
-    },
   },
   components: {
     editor: require("vue2-ace-editor"),
+  },
+  created() {
+    let info = localStorage.getItem("caseInfo");
+    this.caseInfo = JSON.parse(info) || {};
+    this.id = this.caseInfo.id;
+    if (this.id) {
+      if (this.caseInfo.caseResultType === "run") {
+        this.runCase();
+        this.caseInfo.caseResultType = "view";
+        localStorage.setItem("caseInfo", JSON.stringify(this.caseInfo));
+      } else if (this.caseInfo.caseResultType === "view") {
+        this.getResult();
+      }
+    }
   },
   methods: {
     editorInit: function(editor) {
@@ -121,8 +92,6 @@ export default {
       editor.getSession().setUseWrapMode(true);
     },
     onResetForm() {
-      this.$refs.caseFormRef.resetFields();
-      this.isLoading = false;
       this.caseForm.desc = "";
       this.caseForm.creatorNickname = "";
       this.caseForm.result = "";
@@ -131,7 +100,7 @@ export default {
       this.caseForm.runEnv = "";
       this.caseForm.runUserNickname = "";
       this.caseForm.runTime = "";
-      this.$emit("update:caseResultDialogFormVisible", false);
+      this.$router.push("/teprunner/case");
     },
     runCase() {
       this.caseForm.result = "";
@@ -189,30 +158,70 @@ export default {
         };
       }
     },
-    getResultColor(res) {
-      return resultColor(res);
-    },
-    close() {
+    destroyed() {
       this.socket.close();
       this.onResetForm();
-      this.$emit("onCloseCaseResult");
-    },
-    cancel() {
-      this.socket.close();
-      this.$emit("update:caseResultDialogFormVisible", false);
     },
     onEditCase() {
-      this.$emit("update:caseResultDialogFormVisible", false);
-      this.$emit("onEditCase", this.id);
+      localStorage.setItem("caseInfo", JSON.stringify(this.caseInfo));
+      this.$router.push({
+        name: "editCase",
+      });
     },
   },
 };
 </script>
-
-<style scoped lang="scss">
-.role-list {
-  ::v-deep.el-tag {
-    margin-bottom: 15px;
+<style lang="scss" scoped>
+/deep/ .form-box {
+  margin-top: 16px;
+  .custom-size .el-form-item__content,
+  .custom-size .el-select,
+  .custom-size .el-select > .el-input {
+    width: 380px;
+  }
+}
+.case-info-list {
+  margin: 0 24px;
+}
+.case-name {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.85);
+  line-height: 22px;
+  margin-top: 10px;
+}
+.case-info-list {
+  font-size: 14px;
+  line-height: 20px;
+  padding-bottom: 32px;
+  color: rgba(0, 0, 0, 0.65);
+  span.label {
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.45);
+  }
+}
+.info-txt {
+  margin-top: 16px;
+  line-height: 28px;
+  p {
+    padding-right: 30px;
+    position: relative;
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      right: 15px;
+      top: 6px;
+      width: 1px;
+      height: 16px;
+      background: #e6e6ea;
+    }
+    float: left;
+    &:first-child {
+      padding-left: 0;
+    }
+    &:last-child::after {
+      width: 0;
+    }
   }
 }
 .ace_editor {

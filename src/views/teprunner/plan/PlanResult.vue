@@ -157,7 +157,7 @@ export default {
       };
       localStorage.setItem("caseInfo", JSON.stringify(caseInfo));
       this.$router.push({
-        name: "caseResult",
+        name: "plan.caseResult",
       });
     },
   },

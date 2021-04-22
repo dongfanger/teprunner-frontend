@@ -49,17 +49,63 @@ const routes = [
           },
           {
             path: "fixture",
+            name: "fixture",
             meta: {
-              title: "fixture",
+              title: "fixtures",
             },
             component: () => import("@/views/teprunner/Fixture.vue"),
+            children: [
+              {
+                path: "addFixture",
+                name: "addFixture",
+                meta: {
+                  title: "新增 fixture",
+                },
+                component: () => import("@/views/teprunner/FixtureEditor"),
+              },
+              {
+                path: "editFixture",
+                name: "editFixture",
+                meta: {
+                  title: "编辑 fixture",
+                },
+                component: () => import("@/views/teprunner/FixtureEditor"),
+              },
+            ],
           },
           {
             path: "case",
+            name: "case",
             meta: {
               title: "用例管理",
             },
             component: () => import("@/views/teprunner/case/CaseManagement.vue"),
+            children: [
+              {
+                path: "addCase",
+                name: "addCase",
+                meta: {
+                  title: "新增用例",
+                },
+                component: () => import("@/views/teprunner/case/CaseEditor"),
+              },
+              {
+                path: "editCase",
+                name: "editCase",
+                meta: {
+                  title: "编辑用例",
+                },
+                component: () => import("@/views/teprunner/case/CaseEditor"),
+              },
+              {
+                path: "caseResult",
+                name: "case.caseResult",
+                meta: {
+                  title: "用例运行结果",
+                },
+                component: () => import("@/views/teprunner/case/CaseResult"),
+              },
+            ],
           },
           {
             path: "plan",
@@ -103,7 +149,7 @@ const routes = [
                 children: [
                   {
                     path: "caseResult",
-                    name: "caseResult",
+                    name: "plan.caseResult",
                     meta: {
                       title: "用例运行结果",
                     },

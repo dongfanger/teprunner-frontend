@@ -1,10 +1,10 @@
 <template>
   <div class="page-wrap">
-    <div><slot name="projectEnv"></slot></div>
-    <div class="control-list" v-if="showOperateCont">
+    <div style="float: left; margin-right: 10px"><slot name="projectEnv"></slot></div>
+    <div style="float: left" class="control-list" v-if="showOperateCont">
       <slot name="operate"></slot>
     </div>
-    <div class="content-info">
+    <div style="clear:both;" class="content-info">
       <template v-if="searchLayout === 2">
         <div class="content-header">
           <div class="info-name">{{ tableTitle }}</div>

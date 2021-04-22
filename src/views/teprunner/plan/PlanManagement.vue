@@ -1,20 +1,30 @@
 <template>
   <div>
-    <project-env v-if="$route.name === 'plan'" @changeProject="changeProject"></project-env>
-    <project-env v-if="$route.name === 'addPlan'" @changeProject="changeProject" :showEnv="false"></project-env>
     <project-env
+      style="float: left; margin-right: 10px"
+      v-if="$route.name === 'plan'"
+      @changeProject="changeProject"
+    ></project-env>
+    <project-env
+      style="float: left; margin-right: 10px"
+      v-if="$route.name === 'addPlan'"
+      @changeProject="changeProject"
+      :showEnv="false"
+    ></project-env>
+    <project-env
+      style="float: left; margin-right: 10px"
       v-if="$route.name === 'editPlan'"
       @changeProject="changeProject"
       :showEnv="false"
       :project-disabled="true"
     ></project-env>
     <div class="plan-manage-index" v-if="$route.name === 'plan'">
-      <div class="control-list">
-        <el-button type="primary" icon="iconfont iconcircleplus" @click="addPlan">
+      <div style="float: left" class="control-list">
+        <el-button type="primary" icon="el-icon-plus" @click="addPlan">
           新增计划
         </el-button>
       </div>
-      <div class="content-info" :loading="tableLoading">
+      <div style="clear: both" class="content-info" :loading="tableLoading">
         <div class="content-header">
           <div class="info-name">
             全部计划
@@ -44,33 +54,33 @@
             <el-table-column
               prop="id"
               label="计划ID"
-              width="120px"
+              width="80px"
               align="center"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column label="计划名称" prop="name" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="caseNum" label="用例条数" width="80px" align="center" show-overflow-tooltip>
+            <el-table-column prop="caseNum" label="用例" width="50px" align="center" show-overflow-tooltip>
               <template slot-scope="scope">
                 <div :style="numStyle('case', scope.row.caseNum)" @click="gotoPlanResult(scope.row, 'case')">
                   {{ scope.row.caseNum }}
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="failedPassed" label="成功条数" width="80px" align="center" show-overflow-tooltip>
+            <el-table-column prop="failedPassed" label="成功" width="50px" align="center" show-overflow-tooltip>
               <template slot-scope="scope">
                 <div :style="numStyle('passed', scope.row.passedNum)" @click="gotoPlanResult(scope.row, 'passed')">
                   {{ scope.row.passedNum }}
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="failedPassed" label="失败条数" width="80px" align="center" show-overflow-tooltip>
+            <el-table-column prop="failedPassed" label="失败" width="50px" align="center" show-overflow-tooltip>
               <template slot-scope="scope">
                 <div :style="numStyle('failed', scope.row.failedNum)" @click="gotoPlanResult(scope.row, 'failed')">
                   {{ scope.row.failedNum }}
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="failedPassed" label="错误条数" width="80px" align="center" show-overflow-tooltip>
+            <el-table-column prop="failedPassed" label="错误" width="50px" align="center" show-overflow-tooltip>
               <template slot-scope="scope">
                 <div :style="numStyle('error', scope.row.errorNum)" @click="gotoPlanResult(scope.row, 'error')">
                   {{ scope.row.errorNum }}
@@ -79,15 +89,15 @@
             </el-table-column>
             <el-table-column
               prop="elapsed"
-              label="运行耗时"
-              width="80px "
+              label="耗时"
+              width="60px "
               align="center"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
               prop="runEnv"
-              label="运行环境"
-              width="120px"
+              label="环境"
+              width="60px"
               align="center"
               show-overflow-tooltip
             ></el-table-column>
@@ -105,25 +115,40 @@
               align="center"
               show-overflow-tooltip
             ></el-table-column>
-            <el-table-column label="操作" width="350px">
+            <el-table-column label="操作" width="230px">
               <template slot-scope="scope">
                 <div>
                   <el-button
                     v-if="scope.row.caseNum > 0"
                     type="success"
+                    icon="el-icon-video-play"
                     size="mini"
                     plain
                     @click="runPlan(scope.row)"
                     :loading="scope.row.loading"
-                  >
-                    运行
-                  </el-button>
-                  <el-button v-else disabled size="mini" plain>
-                    运行
-                  </el-button>
-                  <el-button type="info" size="mini" @click="gotoPlanEditor(scope.row)" plain>编辑</el-button>
-                  <el-button type="info" size="mini" @click="gotoCaseList(scope.row)" plain>用例列表</el-button>
-                  <el-button type="danger" size="mini" @click="deletePlan(scope.row)" plain>删除</el-button>
+                  ></el-button>
+                  <el-button v-else disabled icon="el-icon-video-play" size="mini" plain></el-button>
+                  <el-button
+                    type="info"
+                    icon="el-icon-edit-outline"
+                    size="mini"
+                    @click="gotoPlanEditor(scope.row)"
+                    plain
+                  ></el-button>
+                  <el-button
+                    type="danger"
+                    icon="el-icon-document-delete"
+                    size="mini"
+                    @click="deletePlan(scope.row)"
+                    plain
+                  ></el-button>
+                  <el-button
+                    type="info"
+                    icon="el-icon-tickets"
+                    size="mini"
+                    @click="gotoCaseList(scope.row)"
+                    plain
+                  ></el-button>
                 </div>
               </template>
             </el-table-column>

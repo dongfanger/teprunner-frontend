@@ -51,7 +51,7 @@ export default {
   name: "CaseResult",
   data() {
     return {
-      codeHeight: 1000,
+      codeHeight: window.innerHeight - 315,
       caseForm: {
         desc: "",
         creatorNickname: "",

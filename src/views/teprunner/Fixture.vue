@@ -1,8 +1,8 @@
 <template>
   <div>
-    <WrapComponent tableTitle="fixtures">
+    <WrapComponent v-if="$route.name === 'fixture'" tableTitle="fixtures">
       <ProjectEnv slot="projectEnv" @changeProject="changeProject" :showEnv="false"></ProjectEnv>
-      <el-button type="primary" class="pri-add-btn" icon="el-icon-circle-plus" @click="onOperate('new')" slot="operate">
+      <el-button type="primary" class="pri-add-btn" icon="el-icon-plus" @click="addFixture" slot="operate">
         新增 fixture
       </el-button>
       <el-table
@@ -21,7 +21,7 @@
         <el-table-column label="操作" width="320px">
           <template slot-scope="scope">
             <div>
-              <el-button type="info" size="mini" plain @click="onOperate('edit', scope.row.id)">编辑</el-button>
+              <el-button type="info" size="mini" plain @click="gotoFixtureEditor(scope.row)">编辑</el-button>
               <el-button type="danger" size="mini" plain @click="onDel('删除', scope.row)">删除</el-button>
             </div>
           </template>
@@ -33,35 +33,24 @@
         </div>
       </div>
     </WrapComponent>
-
-    <AddFixtureDialog
-      :dialogFormVisible.sync="dialogFormVisible"
-      :dialogTitle="dialogTitle"
-      :id="curId"
-      @success="resetForm"
-    />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import WrapComponent from "@/components/WrapComponent";
 import { delConfirm, filterNullValue } from "@/utils/commonMethods";
-import AddFixture from "@/views/teprunner/AddFixture";
 import ProjectEnv from "@/components/ProjectEnv";
 
 export default {
   name: "Fixtures",
   components: {
     WrapComponent,
-    AddFixtureDialog: AddFixture,
     ProjectEnv: ProjectEnv,
   },
   data() {
     return {
       loading: false,
-      dialogFormVisible: false,
-      dialogTitle: "新增 fixture",
-      curId: "",
       tableData: [],
       pageParams: {
         currentPage: 1,
@@ -111,14 +100,18 @@ export default {
           });
       }
     },
-    onOperate(type, id = "") {
-      const titleMap = {
-        new: "新增 fixture",
-        edit: "编辑 fixture",
-      };
-      this.dialogTitle = titleMap[type];
-      this.dialogFormVisible = true;
-      this.curId = id;
+    addFixture() {
+      localStorage.removeItem("fixtureInfo");
+      this.$router.push({
+        name: "addFixture",
+      });
+    },
+    gotoFixtureEditor(row) {
+      let rowInfo = JSON.stringify(row);
+      localStorage.setItem("fixtureInfo", rowInfo);
+      this.$router.push({
+        name: "editFixture",
+      });
     },
     onDel(btnText, row) {
       delConfirm(
@@ -144,9 +137,6 @@ export default {
         this.getFixtureList();
       });
     },
-    resetForm() {
-      this.getFixtureList();
-    },
     changeSize(val) {
       this.pageParams.pageSize = val;
       this.pageParams.currentPage = 1;
@@ -158,6 +148,16 @@ export default {
     },
     changeProject() {
       this.getFixtureList();
+    },
+  },
+  watch: {
+    $route: {
+      handler(to) {
+        if (to.name === "fixture") {
+          this.getFixtureList();
+        }
+      },
+      immediate: true,
     },
   },
 };

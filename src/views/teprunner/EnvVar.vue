@@ -2,7 +2,7 @@
   <div>
     <WrapComponent tableTitle="全部变量">
       <ProjectEnv slot="projectEnv" @changeProject="changeProject" @changeEnv="changeEnv"></ProjectEnv>
-      <el-button type="primary" class="pri-add-btn" icon="el-icon-circle-plus" @click="onOperate('new')" slot="operate">
+      <el-button type="primary" class="pri-add-btn" icon="el-icon-plus" @click="onOperate('new')" slot="operate">
         新增变量
       </el-button>
       <el-table

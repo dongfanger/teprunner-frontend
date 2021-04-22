@@ -1,5 +1,5 @@
 <template>
-  <div class="content-info">
+  <div style="clear: both;" class="content-info">
     <div class="content-header">
       <div class="info-name">
         基本信息

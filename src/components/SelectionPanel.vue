@@ -7,6 +7,7 @@
       :width="dialogWidth"
       :close-on-click-modal="false"
       @close="onCancel(selectedItem)"
+      style="margin-top: -80px"
     >
       <div class="select-panel-list-box" :loading="loading">
         <div class="search-box clear">

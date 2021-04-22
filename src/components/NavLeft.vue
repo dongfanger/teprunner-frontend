@@ -71,7 +71,7 @@ export default {
   .aside {
     background-color: #00142a;
     .auto-el-menu:not(.el-menu--collapse) {
-      width: 200px;
+      width: 150px;
     }
   }
 }

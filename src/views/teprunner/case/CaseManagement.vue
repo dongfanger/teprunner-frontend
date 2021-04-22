@@ -1,8 +1,8 @@
 <template>
   <div>
-    <WrapComponent tableTitle="全部用例">
+    <WrapComponent v-if="$route.name === 'case'" tableTitle="全部用例">
       <ProjectEnv slot="projectEnv" @changeProject="changeProject"></ProjectEnv>
-      <el-button type="primary" class="pri-add-btn" icon="el-icon-plus" @click="onOperate('new')" slot="operate">
+      <el-button type="primary" class="pri-add-btn" icon="el-icon-plus" @click="addCase" slot="operate">
         新增用例
       </el-button>
       <el-button type="info" class="pri-add-btn" icon="el-icon-download" @click="writeDown" slot="operate">
@@ -33,12 +33,12 @@
           fontSize: '14px',
         }"
       >
-        <el-table-column prop="id" label="用例ID" width="120px" align="center" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="id" label="用例ID" width="80px" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column prop="desc" label="用例描述" show-overflow-tooltip></el-table-column>
         <el-table-column
           prop="creatorNickname"
           label="创建人"
-          width="120px"
+          width="80px"
           align="center"
           show-overflow-tooltip
         ></el-table-column>
@@ -46,7 +46,7 @@
           <template slot-scope="scope">
             <div
               :style="{ color: getResultColor(scope.row.result) }"
-              @click="onOpenCaseResult('view', scope.row.id)"
+              @click="gotoCaseResult('view', scope.row)"
               style="cursor: pointer; text-decoration: underline;"
             >
               {{ scope.row.result }}
@@ -55,22 +55,16 @@
         </el-table-column>
         <el-table-column
           prop="elapsed"
-          label="运行耗时"
-          width="120px"
+          label="耗时"
+          width="80px"
           align="center"
           show-overflow-tooltip
         ></el-table-column>
-        <el-table-column
-          prop="runEnv"
-          label="运行环境"
-          width="120px"
-          align="center"
-          show-overflow-tooltip
-        ></el-table-column>
+        <el-table-column prop="runEnv" label="环境" width="50px" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column
           prop="runUserNickname"
           label="运行人"
-          width="120px"
+          width="80px"
           align="center"
           show-overflow-tooltip
         ></el-table-column>
@@ -82,15 +76,37 @@
           show-overflow-tooltip
         ></el-table-column>
 
-        <el-table-column label="操作" width="320px" align="center">
+        <el-table-column label="操作" width="230px" align="center">
           <template slot-scope="scope">
             <div>
-              <el-button type="success" size="mini" plain @click="onOpenCaseResult('run', scope.row.id)">
-                运行
-              </el-button>
-              <el-button type="info" size="mini" plain @click="onOperate('edit', scope.row.id)">编辑</el-button>
-              <el-button type="danger" size="mini" plain @click="onDel('删除', scope.row)">删除</el-button>
-              <el-button type="warning" size="mini" plain @click="onCopy(scope.row.id)">复制</el-button>
+              <el-button
+                type="success"
+                icon="el-icon-video-play"
+                size="mini"
+                plain
+                @click="gotoCaseResult('run', scope.row)"
+              ></el-button>
+              <el-button
+                type="info"
+                icon="el-icon-edit-outline"
+                size="mini"
+                plain
+                @click="gotoCaseEditor(scope.row)"
+              ></el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-document-delete"
+                size="mini"
+                plain
+                @click="onDel('删除', scope.row)"
+              ></el-button>
+              <el-button
+                type="warning"
+                icon="el-icon-document-copy"
+                size="mini"
+                plain
+                @click="onCopy(scope.row.id)"
+              ></el-button>
             </div>
           </template>
         </el-table-column>
@@ -102,22 +118,7 @@
       </div>
     </WrapComponent>
 
-    <AddCaseDialog
-      :addCaseDialogFormVisible.sync="addCaseDialogFormVisible"
-      :addCaseDialogTitle="addCaseDialogTitle"
-      :id="curCaseId"
-      @onRunCase="onRunCase"
-      @success="resetForm"
-    />
-
-    <CaseResultDialog
-      :caseResultDialogFormVisible.sync="caseResultDialogFormVisible"
-      :caseResultDialogTitle="caseResultDialogTitle"
-      :id="curCaseId"
-      :caseResultType.sync="caseResultType"
-      @onEditCase="onEditCase"
-      @onCloseCaseResult="onCloseCaseResult"
-    />
+    <router-view></router-view>
 
     <writeDownDialog
       :writeDownDialogFormVisible.sync="writeDownDialogFormVisible"
@@ -129,8 +130,6 @@
 <script>
 import WrapComponent from "@/components/WrapComponent";
 import { delConfirm, filterNullValue, resultColor } from "@/utils/commonMethods";
-import AddCase from "@/views/teprunner/case/AddCase";
-import CaseResult from "@/views/teprunner/case/CaseResult";
 import ProjectEnv from "@/components/ProjectEnv";
 import writeDown from "@/views/teprunner/case/WriteDown";
 
@@ -139,22 +138,13 @@ export default {
   components: {
     WrapComponent,
     ProjectEnv,
-    AddCaseDialog: AddCase,
-    CaseResultDialog: CaseResult,
     writeDownDialog: writeDown,
   },
   data() {
     return {
       loading: false,
-      addCaseDialogFormVisible: false,
-      addCaseDialogTitle: "",
-      caseResultDialogFormVisible: false,
-      caseResultDialogTitle: "",
-      caseResultType: "",
-      afterCloseRefreshList: false,
       writeDownDialogFormVisible: false,
       writeDownDialogTitle: "下载环境",
-      curCaseId: "",
       searchForm: {
         id: "",
         desc: "",
@@ -221,14 +211,26 @@ export default {
           this.loading = false;
         });
     },
-    onOperate(type, id = "") {
-      const titleMap = {
-        new: "新增用例",
-        edit: "编辑用例",
-      };
-      this.addCaseDialogTitle = titleMap[type];
-      this.addCaseDialogFormVisible = true;
-      this.curCaseId = id;
+    addCase() {
+      localStorage.removeItem("caseInfo");
+      this.$router.push({
+        name: "addCase",
+      });
+    },
+    gotoCaseEditor(row) {
+      let rowInfo = JSON.stringify(row);
+      localStorage.setItem("caseInfo", rowInfo);
+      this.$router.push({
+        name: "editCase",
+      });
+    },
+    gotoCaseResult(type, row) {
+      row.caseResultType = type;
+      let rowInfo = JSON.stringify(row);
+      localStorage.setItem("caseInfo", rowInfo);
+      this.$router.push({
+        name: "case.caseResult",
+      });
     },
     onDel(btnText, row) {
       delConfirm(
@@ -257,26 +259,6 @@ export default {
     getResultColor(res) {
       return resultColor(res);
     },
-    onOpenCaseResult(type, id = "") {
-      const titleMap = {
-        run: "运行用例结果",
-        view: "查看用例结果",
-      };
-      this.caseResultDialogTitle = titleMap[type];
-      this.caseResultDialogFormVisible = true;
-      this.curCaseId = id;
-      this.caseResultType = type;
-      if (type === "run") {
-        this.afterCloseRefreshList = true;
-      } else if (type === "view") {
-        this.afterCloseRefreshList = false;
-      }
-    },
-    onCloseCaseResult() {
-      if (this.afterCloseRefreshList === true) {
-        this.getCaseList();
-      }
-    },
     writeDown() {
       this.writeDownDialogFormVisible = true;
     },
@@ -293,12 +275,6 @@ export default {
           this.isLoading = false;
           this.getCaseList();
         });
-    },
-    onEditCase(id) {
-      this.onOperate("edit", id);
-    },
-    onRunCase(id) {
-      this.onOpenCaseResult("run", id);
     },
     changeProject() {
       this.pageParams = {
@@ -320,6 +296,16 @@ export default {
     changeCurrentPage(val) {
       this.pageParams.currentPage = val;
       this.getCaseList();
+    },
+  },
+  watch: {
+    $route: {
+      handler(to) {
+        if (to.name === "case") {
+          this.getCaseList();
+        }
+      },
+      immediate: true,
     },
   },
 };
