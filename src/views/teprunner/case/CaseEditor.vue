@@ -133,10 +133,8 @@ export default {
         });
     },
     onRunCase() {
-      console.log("run...");
       this.$refs.caseFormRef.validate(valid => {
         if (valid) {
-          console.log("really>");
           this.onRequest("run");
         }
       });
