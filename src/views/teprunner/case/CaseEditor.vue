@@ -51,7 +51,11 @@ export default {
       rules: {
         desc: [{ required: true, message: "用例描述不能为空", trigger: "blur" }],
       },
-      caseInfo: null,
+      caseInfo: {
+        id: "",
+        caseResultType: "",
+      },
+      createdCaseId: "",
     };
   },
   created() {
@@ -110,7 +114,8 @@ export default {
         $url = `/teprunner/cases/${this.id}`;
       }
       this.$http[$method]($url, params)
-        .then(() => {
+        .then(({ data }) => {
+          this.createdCaseId = data.id;
           this.$notifyMessage("保存成功", { type: "success" });
           this.onResetForm();
           this.$emit("success");
@@ -118,6 +123,7 @@ export default {
         .finally(() => {
           this.isLoading = false;
           if (type === "run") {
+            this.caseInfo.id = this.createdCaseId;
             this.caseInfo.caseResultType = "run";
             localStorage.setItem("caseInfo", JSON.stringify(this.caseInfo));
             this.$router.push({
@@ -127,8 +133,10 @@ export default {
         });
     },
     onRunCase() {
+      console.log("run...");
       this.$refs.caseFormRef.validate(valid => {
         if (valid) {
+          console.log("really>");
           this.onRequest("run");
         }
       });
