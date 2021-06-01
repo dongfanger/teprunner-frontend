@@ -2,7 +2,7 @@
   <div style="height: 100%; overflow: auto;">
     <div style="text-align: left; font-size: 14px; margin-left: 20px">
       <p>
-        <span style="line-height:1.5;font-size:15px;">pytest语法说明</span>
+        <span style="line-height:1.5;font-size:15px;">语法说明</span>
       </p>
       <br />
       <br />
@@ -11,9 +11,11 @@
       </h3>
       <br />
       <p>
-        key-value字符串，通过env_vars.name引用。比如域名：
+        key-value字符串。比如域名：
         <br />
         变量名domain，变量值https://qa.com
+        <br />
+        通过env_vars.domain使用
       </p>
       <br />
       <h3>
@@ -21,7 +23,7 @@
       </h3>
       <br />
       <p>
-        依赖注入函数，封装API等，供测试用例调用。比如登录接口：
+        接口管理、数据管理等，供测试用例调用。比如登录接口：
         <br />
       </p>
       <pre v-highlightA><code >from tep.client import request
@@ -57,9 +59,6 @@ def login(env_vars):
     return Clazz
       </code></pre>
       <br />
-      其中url是个fixture，返回环境变量env_vars.domain+入参api_path拼接后的完整url。
-      <br />
-      <br />
       <h3>
         <span style="background-color:#FFE500;">用例示例</span>
       </h3>
@@ -73,7 +72,7 @@ from loguru import logger
 from tep.client import request
 
 
-def test_post(faker_ch, url, login):
+def test_post(faker_ch, env_vars, login):
     # 描述
     logger.info("test post")
     # 数据
@@ -81,7 +80,7 @@ def test_post(faker_ch, url, login):
     # 请求
     response = request(
         "post",
-        url=url("/api/users"),
+        url=env_vars.domain + "/api/users",
         headers=login.jwt_headers,
         json={
             "name": fake.name()
@@ -101,14 +100,14 @@ from loguru import logger
 from tep.client import request
 
 
-def test(faker_ch, login, url):
+def test(faker_ch, login, env_vars):
     fake = faker_ch
     logger.info("新增")
     nickname = fake.name()
     phone = fake.phone_number()
     response = request(
         "post",
-        url=url("/api/users"),
+        url=env_vars.domain + "/api/users",
         headers=login.jwt_headers,
         json={
             "nickname": nickname, "phone": phone
@@ -122,7 +121,7 @@ def test(faker_ch, login, url):
     logger.info("查询")
     response = request(
         "get",
-        url=url("/api/users"),
+        url=env_vars.domain + "/api/users",
         headers=login.jwt_headers,
         params={
             "page": 1,
@@ -137,7 +136,7 @@ def test(faker_ch, login, url):
     phone_new = fake.phone_number()
     response = request(
         "put",
-        url=url(f"/api/users/{user_id}"),
+        url=env_vars.domain + f"/api/users/{user_id}",
         headers=login.jwt_headers,
         json={
             "id": user_id, "createdAt": created_at, "updatedAt": updated_at,
@@ -150,7 +149,7 @@ def test(faker_ch, login, url):
     logger.info("删除")
     response = request(
         "delete",
-        url=url(f"/api/users/{user_id}"),
+        url=env_vars.domain + f"/api/users/{user_id}",
         headers=login.jwt_headers
     )
     assert response.status_code &#60; 400
@@ -164,41 +163,41 @@ def test(faker_ch, login, url):
         <b>get</b>
       </p>
       <pre v-highlightA><code ># 不带参数
-request("get", url=url("/api/xxx"), headers=headers)
+request("get", url=env_vars.domain + "/api/xxx", headers=headers)
 
 # json参数
-request("get", url=url("/api/xxx"), headers=headers, params={})
+request("get", url=env_vars.domain + "/api/xxx", headers=headers, params={})
 
 # queryset
-request("get", url=url("/api/xxx?a=1&b=2"), headers=headers)
+request("get", url=env_vars.domain + "/api/xxx?a=1&b=2", headers=headers)
 
 # json转queryset
 from urllib.parse import urlencode
 
 query = {}
-request("get", url=url("/api/xxx") + "?" + urlencode(query), headers=headers)
+request("get", url=env_vars.domain + "/api/xxx" + "?" + urlencode(query), headers=headers)
 </code></pre>
       <br />
       <p>
         <b>post</b>
       </p>
       <pre v-highlightA><code ># json参数
-request("post", url=url("/api/xxx"), headers=headers, json={})
+request("post", url=env_vars.domain + "/api/xxx", headers=headers, json={})
 
 # dict参数
-request("post", url=url("/api/xxx"), headers=headers, data={})
+request("post", url=env_vars.domain + "/api/xxx", headers=headers, data={})
 </code></pre>
       <br />
       <p>
         <b>put</b>
       </p>
-      <pre v-highlightA><code >request("put", url=url("/api/xxx"), headers=headers, json={})
+      <pre v-highlightA><code >request("put", url=env_vars.domain + "/api/xxx", headers=headers, json={})
 </code></pre>
       <br />
       <p>
         <b>delete</b>
       </p>
-      <pre v-highlightA><code >request("delete", url=url(f"/api/xxx"), headers=headers)
+      <pre v-highlightA><code >request("delete", url=env_vars.domain + f"/api/xxx", headers=headers)
 </code></pre>
       <br />
       <br />
