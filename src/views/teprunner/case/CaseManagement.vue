@@ -212,7 +212,7 @@ export default {
         });
     },
     addCase() {
-      if (isProjectExisted()) {
+      if (!isProjectExisted()) {
         this.$notifyMessage(`请先创建项目`, { type: "error" });
         return;
       }
@@ -264,7 +264,7 @@ export default {
       return resultColor(res);
     },
     writeDown() {
-      if (isProjectExisted()) {
+      if (!isProjectExisted()) {
         this.$notifyMessage(`请先创建项目`, { type: "error" });
         return;
       }

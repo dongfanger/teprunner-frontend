@@ -216,7 +216,7 @@ export default {
       this.tableLoading = false;
     },
     addPlan() {
-      if (isProjectExisted()) {
+      if (!isProjectExisted()) {
         this.$notifyMessage(`请先创建项目`, { type: "error" });
         return;
       }

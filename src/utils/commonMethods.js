@@ -80,5 +80,5 @@ export function resultColor(res) {
 
 export function isProjectExisted() {
   let projectEnvList = JSON.parse(localStorage.getItem("projectEnvList"));
-  return !!projectEnvList;
+  return !!projectEnvList.length;
 }

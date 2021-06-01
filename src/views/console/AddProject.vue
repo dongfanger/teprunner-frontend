@@ -102,14 +102,29 @@ export default {
       }
       this.$http[$method]($url, params)
         .then(() => {
-          this.$notifyMessage("保存成功", { type: "success" });
+          this.$notifyMessage("项目保存成功，请重新登录", { type: "success" });
           this.onResetForm();
           this.$emit("success");
+          this.logout();
         })
         .finally(() => {
           this.isLoading = false;
           localStorage.removeItem("projectEnvList");
         });
+    },
+    logout() {
+      let loginInfo = localStorage.getItem("loginInfo");
+      let oldLoginTime = localStorage.getItem("loginTime");
+      localStorage.clear();
+      if (oldLoginTime) {
+        localStorage.setItem("loginTime", new Date().getTime().toLocaleString());
+      }
+      if (loginInfo) {
+        loginInfo = JSON.parse(loginInfo);
+        loginInfo.userPWD = "";
+        localStorage.setItem("loginInfo", JSON.stringify(loginInfo));
+      }
+      this.$router.push("/login");
     },
   },
 };

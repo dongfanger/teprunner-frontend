@@ -81,7 +81,7 @@ export default {
       this.getEnvVarList();
     },
     onOperate(type, id = "") {
-      if (isProjectExisted()) {
+      if (!isProjectExisted()) {
         this.$notifyMessage(`请先创建项目`, { type: "error" });
         return;
       }

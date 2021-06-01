@@ -32,12 +32,7 @@
       </div>
     </WrapComponent>
 
-    <AddProjectDialog
-      :dialogFormVisible.sync="dialogFormVisible"
-      :dialogTitle="dialogTitle"
-      :id="curId"
-      @success="resetForm"
-    />
+    <AddProjectDialog :dialogFormVisible.sync="dialogFormVisible" :dialogTitle="dialogTitle" :id="curId" />
   </div>
 </template>
 
@@ -134,9 +129,6 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-    },
-    resetForm() {
-      this.getProjectList();
     },
     changeSize(val) {
       this.pageParams.pageSize = val;
