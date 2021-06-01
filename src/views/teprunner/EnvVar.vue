@@ -45,7 +45,7 @@
 
 <script>
 import WrapComponent from "@/components/WrapComponent";
-import { delConfirm, filterNullValue } from "@/utils/commonMethods";
+import { delConfirm, filterNullValue, isProjectExisted } from "@/utils/commonMethods";
 import AddEnvVar from "@/views/teprunner/AddEnvVar";
 import ProjectEnv from "@/components/ProjectEnv";
 
@@ -81,6 +81,10 @@ export default {
       this.getEnvVarList();
     },
     onOperate(type, id = "") {
+      if (isProjectExisted()) {
+        this.$notifyMessage(`请先创建项目`, { type: "error" });
+        return;
+      }
       const titleMap = {
         new: "新增变量",
         edit: "编辑变量",

@@ -38,7 +38,7 @@ def login(env_vars):
     logger.info("Administrator login")
     response = request(
         "post",
-        url=env_vars + "/api/users/login",
+        url=env_vars.domain + "/api/users/login",
         headers={"Content-Type": "application/json"},
         json={
             "username": "dongfanger",

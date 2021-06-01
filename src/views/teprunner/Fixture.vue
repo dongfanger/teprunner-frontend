@@ -39,7 +39,7 @@
 
 <script>
 import WrapComponent from "@/components/WrapComponent";
-import { delConfirm, filterNullValue } from "@/utils/commonMethods";
+import { delConfirm, filterNullValue, isProjectExisted } from "@/utils/commonMethods";
 import ProjectEnv from "@/components/ProjectEnv";
 
 export default {
@@ -101,6 +101,10 @@ export default {
       }
     },
     addFixture() {
+      if (isProjectExisted()) {
+        this.$notifyMessage(`请先创建项目`, { type: "error" });
+        return;
+      }
       localStorage.removeItem("fixtureInfo");
       this.$router.push({
         name: "addFixture",

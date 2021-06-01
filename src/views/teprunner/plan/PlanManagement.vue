@@ -172,6 +172,7 @@
 </template>
 <script>
 import ProjectEnv from "@/components/ProjectEnv";
+import { isProjectExisted } from "@/utils/commonMethods";
 export default {
   data() {
     return {
@@ -198,7 +199,9 @@ export default {
       });
       let curProjectEnv = JSON.parse(localStorage.getItem("curProjectEnv"));
       let projectId = curProjectEnv.curProjectId;
-      params.push(`projectId=${projectId}`);
+      if (projectId) {
+        params.push(`projectId=${projectId}`);
+      }
       let url = "/teprunner/plans?" + params.join("&");
       this.tableLoading = true;
       await this.$http.get(url).then(async ({ data }) => {
@@ -213,6 +216,10 @@ export default {
       this.tableLoading = false;
     },
     addPlan() {
+      if (isProjectExisted()) {
+        this.$notifyMessage(`请先创建项目`, { type: "error" });
+        return;
+      }
       localStorage.removeItem("planInfo");
       this.$router.push({
         name: "addPlan",

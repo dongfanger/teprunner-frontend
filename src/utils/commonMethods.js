@@ -77,3 +77,8 @@ export function resultColor(res) {
     return "rgb(0,153,117)";
   }
 }
+
+export function isProjectExisted() {
+  let projectEnvList = JSON.parse(localStorage.getItem("projectEnvList"));
+  return !!projectEnvList;
+}

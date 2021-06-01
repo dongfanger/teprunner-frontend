@@ -129,7 +129,7 @@
 
 <script>
 import WrapComponent from "@/components/WrapComponent";
-import { delConfirm, filterNullValue, resultColor } from "@/utils/commonMethods";
+import { delConfirm, filterNullValue, isProjectExisted, resultColor } from "@/utils/commonMethods";
 import ProjectEnv from "@/components/ProjectEnv";
 import writeDown from "@/views/teprunner/case/WriteDown";
 
@@ -212,6 +212,10 @@ export default {
         });
     },
     addCase() {
+      if (isProjectExisted()) {
+        this.$notifyMessage(`请先创建项目`, { type: "error" });
+        return;
+      }
       localStorage.removeItem("caseInfo");
       this.$router.push({
         name: "addCase",
@@ -260,6 +264,10 @@ export default {
       return resultColor(res);
     },
     writeDown() {
+      if (isProjectExisted()) {
+        this.$notifyMessage(`请先创建项目`, { type: "error" });
+        return;
+      }
       this.writeDownDialogFormVisible = true;
     },
     onCopy(id = "") {
