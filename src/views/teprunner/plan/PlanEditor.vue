@@ -9,11 +9,6 @@
       <el-form-item class="custom-size" prop="name" label="计划名称">
         <el-input v-model="form.name" placeholder="请输入计划名称"></el-input>
       </el-form-item>
-      <el-form-item class="custom-size" prop="taskRunEnv" label="运行环境">
-        <el-select v-model="form.taskRunEnv" @click.native="getEnvList">
-          <el-option v-for="(item, index) in envList" :key="index" :label="item" :value="item"></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item class="custom-size" prop="taskStatus" label="定时任务">
         <el-switch
           :active-text="taskText"
@@ -26,6 +21,11 @@
         >
           >
         </el-switch>
+      </el-form-item>
+      <el-form-item class="custom-size" prop="taskRunEnv" label="运行环境" v-if="form.taskStatus === '1'">
+        <el-select v-model="form.taskRunEnv" @click.native="getEnvList">
+          <el-option v-for="(item, index) in envList" :key="index" :label="item" :value="item"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item class="custom-size" prop="taskCrontab" label="计划时间" v-if="form.taskStatus === '1'">
         <el-input v-model="form.taskCrontab" placeholder="请输入crontab表达式">
