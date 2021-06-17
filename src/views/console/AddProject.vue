@@ -12,6 +12,12 @@
             class="input-380"
           ></el-input>
         </el-form-item>
+        <el-form-item label="Git仓库" prop="gitRepository">
+          <el-input v-model="projectForm.gitRepository" placeholder="请输入代码仓库地址" class="input-380"></el-input>
+        </el-form-item>
+        <el-form-item label="Git分支" prop="gitBranch">
+          <el-input v-model="projectForm.gitBranch" placeholder="请输入代码拉取分支" class="input-380"></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="onResetForm">取 消</el-button>
@@ -57,6 +63,8 @@ export default {
         desc: "",
         leader: "",
         envConfig: "",
+        gitRepository: "",
+        gitBranch: "",
       },
       rules: {
         name: [{ required: true, message: "项目名称不能为空", trigger: "blur" }],
@@ -69,6 +77,8 @@ export default {
       this.$http.get(`/teprunner/projects/${this.id}`).then(({ data }) => {
         this.projectForm.name = data.name;
         this.projectForm.envConfig = data.envConfig;
+        this.projectForm.gitRepository = data.gitRepository;
+        this.projectForm.gitBranch = data.gitBranch;
       });
     },
     onResetForm() {
@@ -76,6 +86,8 @@ export default {
       this.isLoading = false;
       this.projectForm.name = "";
       this.projectForm.env = "";
+      this.projectForm.gitRepository = "";
+      this.projectForm.gitBranch = "";
       this.$emit("update:dialogFormVisible", false);
     },
     onSubmit() {
@@ -83,16 +95,20 @@ export default {
         if (valid) {
           this.projectForm.name = this.projectForm.name.trim();
           this.projectForm.envConfig = this.projectForm.envConfig.trim();
+          this.projectForm.gitRepository = this.projectForm.gitRepository.trim();
+          this.projectForm.gitBranch = this.projectForm.gitBranch.trim();
           this.isLoading = true;
           this.onRequest();
         }
       });
     },
     onRequest() {
-      const { name, envConfig } = this.projectForm;
+      const { name, envConfig, gitRepository, gitBranch } = this.projectForm;
       let params = {
         name,
         envConfig,
+        gitRepository,
+        gitBranch,
       };
       let $method = "post";
       let $url = "/teprunner/projects";

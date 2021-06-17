@@ -16,6 +16,8 @@
       >
         <el-table-column prop="projectName" label="项目名称" show-overflow-tooltip></el-table-column>
         <el-table-column prop="envConfig" label="环境配置"></el-table-column>
+        <el-table-column prop="gitRepository" label="Git仓库"></el-table-column>
+        <el-table-column prop="gitBranch" label="Git分支"></el-table-column>
         <el-table-column label="操作" width="320px">
           <template slot-scope="scope">
             <div>
@@ -116,6 +118,8 @@ export default {
                 id: item.id,
                 projectName: item.name,
                 envConfig: item.envConfig,
+                gitRepository: item.gitRepository,
+                gitBranch: item.gitBranch,
               };
             });
           } else {

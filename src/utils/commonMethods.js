@@ -82,3 +82,7 @@ export function isProjectExisted() {
   let projectEnvList = JSON.parse(localStorage.getItem("projectEnvList"));
   return !!projectEnvList.length;
 }
+
+export function trimStr(str) {
+  return str.replace(/(^\s*)|(\s*$)/g, "");
+}

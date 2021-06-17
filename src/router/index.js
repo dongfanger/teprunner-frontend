@@ -98,6 +98,14 @@ const routes = [
                 component: () => import("@/views/teprunner/case/CaseEditor"),
               },
               {
+                path: "caseView",
+                name: "caseView",
+                meta: {
+                  title: "查看用例",
+                },
+                component: () => import("@/views/teprunner/case/CaseView"),
+              },
+              {
                 path: "caseResult",
                 name: "case.caseResult",
                 meta: {
@@ -158,6 +166,13 @@ const routes = [
                 ],
               },
             ],
+          },
+          {
+            path: "gitSync",
+            meta: {
+              title: "Git同步",
+            },
+            component: () => import("@/views/teprunner/GitSync.vue"),
           },
         ],
       },

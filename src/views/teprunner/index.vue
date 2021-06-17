@@ -21,6 +21,10 @@
         <i class="el-icon-alarm-clock"></i>
         <span slot="title">测试计划</span>
       </el-menu-item>
+      <el-menu-item index="/teprunner/gitSync">
+        <i class="el-icon-attract"></i>
+        <span slot="title">Git同步</span>
+      </el-menu-item>
     </div>
   </NavLeft>
 </template>

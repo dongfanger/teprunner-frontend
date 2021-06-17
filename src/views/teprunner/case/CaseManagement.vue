@@ -34,7 +34,13 @@
         }"
       >
         <el-table-column prop="id" label="用例ID" width="80px" align="center" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="desc" label="用例描述" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="desc" label="用例描述" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <div style="cursor:pointer;text-decoration: underline;color: dodgerblue" @click="gotoCaseView(scope.row)">
+              {{ scope.row.desc }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="creatorNickname"
           label="创建人"
@@ -87,6 +93,7 @@
                 @click="gotoCaseResult('run', scope.row)"
               ></el-button>
               <el-button
+                v-if="scope.row.source === 'platform'"
                 type="info"
                 icon="el-icon-edit-outline"
                 size="mini"
@@ -94,7 +101,28 @@
                 @click="gotoCaseEditor(scope.row)"
               ></el-button>
               <el-button
+                v-if="scope.row.source === 'git'"
+                disabled
+                type="info"
+                style="background-color: #eeeeee; color: gray; border-color: #eeeeee"
+                icon="el-icon-edit-outline"
+                size="mini"
+                plain
+                @click="gotoCaseEditor(scope.row)"
+              ></el-button>
+              <el-button
+                v-if="scope.row.source === 'platform'"
                 type="danger"
+                icon="el-icon-document-delete"
+                size="mini"
+                plain
+                @click="onDel('删除', scope.row)"
+              ></el-button>
+              <el-button
+                v-if="scope.row.source === 'git'"
+                disabled
+                type="danger"
+                style="background-color: #eeeeee; color: gray; border-color: #eeeeee"
                 icon="el-icon-document-delete"
                 size="mini"
                 plain
@@ -129,7 +157,7 @@
 
 <script>
 import WrapComponent from "@/components/WrapComponent";
-import { delConfirm, filterNullValue, isProjectExisted, resultColor } from "@/utils/commonMethods";
+import { delConfirm, filterNullValue, isProjectExisted, resultColor, trimStr } from "@/utils/commonMethods";
 import ProjectEnv from "@/components/ProjectEnv";
 import writeDown from "@/views/teprunner/case/WriteDown";
 
@@ -176,7 +204,9 @@ export default {
       let curProjectEnv = JSON.parse(localStorage.getItem("curProjectEnv"));
       let projectId = curProjectEnv.curProjectId;
       let params = {
-        ...this.searchForm,
+        id: trimStr(this.searchForm.id),
+        desc: trimStr(this.searchForm.desc),
+        api: trimStr(this.searchForm.api),
         page: this.pageParams.currentPage,
         perPage: this.pageParams.pageSize,
         sortField: "id",
@@ -197,6 +227,7 @@ export default {
                 runEnv: item.runEnv,
                 runUserNickname: item.runUserNickname,
                 runTime: item.runTime,
+                source: item.source,
               };
             });
           } else {
@@ -294,6 +325,9 @@ export default {
     },
     resetForm() {
       this.$refs.searchFormRef.resetFields();
+      this.searchForm.api = "";
+      this.searchForm.desc = "";
+      this.searchForm.id = "";
       this.getCaseList();
     },
     changeSize(val) {
@@ -304,6 +338,12 @@ export default {
     changeCurrentPage(val) {
       this.pageParams.currentPage = val;
       this.getCaseList();
+    },
+    gotoCaseView(row) {
+      localStorage.setItem("caseViewId", row.id);
+      this.$router.push({
+        name: "caseView",
+      });
     },
   },
   watch: {
