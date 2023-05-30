@@ -17,33 +17,19 @@
           </el-form-item>
           <template v-if="!userForm.isDefault">
             <el-form-item prop="password">
-              <el-input
-                v-model.trim="userForm.password"
-                :show-password="true"
-                placeholder="请输入密码"
-                class="input-380"
-                @input="clearChinese($event, 'password')"
-              />
+              <el-input v-model.trim="userForm.password" :show-password="true" placeholder="请输入密码" class="input-380"
+                @input="clearChinese($event, 'password')" />
             </el-form-item>
             <el-form-item prop="confirmPWD">
-              <el-input
-                v-model.trim="userForm.confirmPWD"
-                :show-password="true"
-                placeholder="请再次输入密码"
-                class="input-380"
-              />
+              <el-input v-model.trim="userForm.confirmPWD" :show-password="true" placeholder="请再次输入密码"
+                class="input-380" />
             </el-form-item>
           </template>
         </template>
         <el-form-item class="has-avatar" label="关联角色" prop="roleNames">
           <div v-if="userForm.roleNames.length" class="role-list">
-            <el-tag
-              :key="index"
-              v-for="(item, index) in userForm.roleNames"
-              closable
-              :disable-transitions="false"
-              @close="delRole(userForm.roleNames, index)"
-            >
+            <el-tag :key="index" v-for="(item, index) in userForm.roleNames" closable :disable-transitions="false"
+              @close="delRole(userForm.roleNames, index)">
               <span class="tag-name">{{ item.name }}</span>
             </el-tag>
           </div>
@@ -56,16 +42,9 @@
       </div>
     </el-dialog>
 
-    <selection-panel
-      title="选择关联角色"
-      :show="rolePanelVisible"
-      :selectedItem="userForm.roleNames"
-      :single-choice="true"
-      v-bind="rolePanelParams"
-      dialogWidth="600px"
-      @confirm="confirmSelection"
-      @dataChange="changeRoleParams"
-    ></selection-panel>
+    <selection-panel title="选择关联角色" :show="rolePanelVisible" :selectedItem="userForm.roleNames" :single-choice="true"
+      v-bind="rolePanelParams" dialogWidth="600px" @confirm="confirmSelection"
+      @dataChange="changeRoleParams"></selection-panel>
   </div>
 </template>
 
@@ -266,10 +245,8 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.role-list {
-  ::v-deep.el-tag {
-    margin-bottom: 15px;
-  }
+<style>
+.role-list ::v-deep.el-tag {
+  margin-bottom: 15px;
 }
 </style>

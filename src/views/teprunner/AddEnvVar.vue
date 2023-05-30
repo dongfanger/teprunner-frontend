@@ -122,10 +122,8 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.role-list {
-  ::v-deep.el-tag {
-    margin-bottom: 15px;
-  }
+<style>
+.role-list ::v-deep.el-tag {
+  margin-bottom: 15px;
 }
 </style>

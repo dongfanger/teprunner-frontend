@@ -176,7 +176,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style>
 .tabtop13 {
   margin-top: 13px;
 }

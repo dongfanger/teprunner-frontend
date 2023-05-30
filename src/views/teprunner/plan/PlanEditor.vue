@@ -10,15 +10,8 @@
         <el-input v-model="form.name" placeholder="请输入计划名称"></el-input>
       </el-form-item>
       <el-form-item class="custom-size" prop="taskStatus" label="定时任务">
-        <el-switch
-          :active-text="taskText"
-          active-value="1"
-          active-color="rgb(22,140,0)"
-          inactive-value="0"
-          inactive-color="rgb(200,0,0)"
-          v-model="form.taskStatus"
-          @change="changeScheduleSwitch()"
-        >
+        <el-switch :active-text="taskText" active-value="1" active-color="rgb(22,140,0)" inactive-value="0"
+          inactive-color="rgb(200,0,0)" v-model="form.taskStatus" @change="changeScheduleSwitch()">
           >
         </el-switch>
       </el-form-item>
@@ -182,13 +175,14 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-/deep/ .form-box {
+<style>
+.form-box {
   margin-top: 16px;
-  .custom-size .el-form-item__content,
-  .custom-size .el-select,
-  .custom-size .el-select > .el-input {
-    width: 380px;
-  }
+}
+
+.form-box .custom-size .el-form-item__content,
+.custom-size .el-select,
+.custom-size .el-select>.el-input {
+  width: 380px;
 }
 </style>

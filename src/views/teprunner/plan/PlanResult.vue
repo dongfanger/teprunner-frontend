@@ -22,61 +22,26 @@
           </div>
         </div>
       </div>
-      <el-table
-        :data="tableData"
-        v-loading="loading"
-        :header-cell-style="{
-          background: 'rgba(144, 147, 153, 0.06)',
-          color: 'rgba(0, 0, 0, 0.65)',
-          fontSize: '14px',
-        }"
-      >
-        <el-table-column
-          prop="caseId"
-          label="用例ID"
-          width="120px"
-          align="center"
-          show-overflow-tooltip
-        ></el-table-column>
+      <el-table :data="tableData" v-loading="loading" :header-cell-style="{
+        background: 'rgba(144, 147, 153, 0.06)',
+        color: 'rgba(0, 0, 0, 0.65)',
+        fontSize: '14px',
+      }">
+        <el-table-column prop="caseId" label="用例ID" width="120px" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column prop="caseDesc" label="用例描述" show-overflow-tooltip></el-table-column>
-        <el-table-column
-          prop="caseCreatorNickname"
-          label="创建人"
-          width="120px"
-          align="center"
-          show-overflow-tooltip
-        ></el-table-column>
+        <el-table-column prop="caseCreatorNickname" label="创建人" width="120px" align="center"
+          show-overflow-tooltip></el-table-column>
         <el-table-column prop="result" label="运行结果" width="200px" align="center" show-overflow-tooltip>
           <template slot-scope="scope">
-            <div
-              @click="gotoCaseResult(scope.row.caseId, scope.row.planId)"
-              style="cursor: pointer; text-decoration: underline;"
-            >
+            <div @click="gotoCaseResult(scope.row.caseId, scope.row.planId)"
+              style="cursor: pointer; text-decoration: underline;">
               {{ scope.row.result }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="elapsed"
-          label="运行耗时"
-          width="120px"
-          align="center"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column
-          prop="runEnv"
-          label="运行环境"
-          width="120px"
-          align="center"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column
-          prop="runTime"
-          label="运行时间"
-          width="180px"
-          align="center"
-          show-overflow-tooltip
-        ></el-table-column>
+        <el-table-column prop="elapsed" label="运行耗时" width="120px" align="center" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="runEnv" label="运行环境" width="120px" align="center" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="runTime" label="运行时间" width="180px" align="center" show-overflow-tooltip></el-table-column>
       </el-table>
       <div class="content-footer clear">
         <div class="block page-list self-right">
@@ -163,57 +128,69 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-/deep/ .form-box {
+<style>
+.form-box {
   margin-top: 16px;
-  .custom-size .el-form-item__content,
-  .custom-size .el-select,
-  .custom-size .el-select > .el-input {
-    width: 380px;
-  }
 }
+
+.form-box .custom-size .el-form-item__content,
+.custom-size .el-select,
+.custom-size .el-select>.el-input {
+  width: 380px;
+}
+
 .plan-info-list {
   margin: 0 24px;
 }
+
 .plan-name {
   font-size: 16px;
   color: rgba(0, 0, 0, 0.85);
   line-height: 22px;
   margin-top: 10px;
 }
+
 .plan-info-list {
   font-size: 14px;
   line-height: 20px;
   padding-bottom: 32px;
   color: rgba(0, 0, 0, 0.65);
-  span.label {
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.45);
-  }
+
+
 }
+
+.plan-info-list span.label {
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.45);
+}
+
 .info-txt {
   margin-top: 16px;
   line-height: 28px;
-  p {
-    padding-right: 30px;
-    position: relative;
-    &::after {
-      content: "";
-      display: block;
-      position: absolute;
-      right: 15px;
-      top: 6px;
-      width: 1px;
-      height: 16px;
-      background: #e6e6ea;
-    }
-    float: left;
-    &:first-child {
-      padding-left: 0;
-    }
-    &:last-child::after {
-      width: 0;
-    }
-  }
+}
+
+.info-txt p {
+  padding-right: 30px;
+  position: relative;
+  float: left;
+}
+
+.info-txt p ::after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 15px;
+  top: 6px;
+  width: 1px;
+  height: 16px;
+  background: #e6e6ea;
+}
+
+.info-txt p :first-child {
+  padding-left: 0;
+}
+
+.info-txt p :last-child::after {
+  width: 0;
 }
 </style>

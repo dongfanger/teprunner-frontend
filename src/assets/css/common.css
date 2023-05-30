@@ -1,0 +1,250 @@
+html {
+  background: #f2f2f4;
+}
+
+.self-left {
+  float: left;
+}
+
+.self-right {
+  float: right;
+}
+
+.clear::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.control-list {
+  margin-bottom: 24px;
+}
+
+.content-info {
+  background: #fff;
+  padding-top: 16px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.content-info .content-header {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.content-info .content-header .info-name {
+  padding-left: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.85);
+  line-height: 40px;
+  position: relative;
+}
+
+.content-info .content-header .info-name::after {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 16px;
+  background: #4fda5e;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  margin-top: -8px;
+}
+
+.content-footer {
+  height: 64px;
+  line-height: 64px;
+  border-top: 1px solid #e6e6ea;
+  padding: 0 24px;
+}
+
+.content-footer .el-button+.el-button {
+  margin-left: 16px;
+}
+
+.content-footer .page-list>div {
+  height: 28px;
+  margin-top: 18px;
+}
+
+.content-footer .el-pagination {
+  font-weight: 100 !important;
+  color: #606266;
+}
+
+.td-pop p {
+  margin-bottom: 23px;
+}
+
+.title-search-form .el-form-item {
+  margin-bottom: 16px;
+}
+
+.search-form {
+  padding-left: 24px;
+  padding-right: 24px;
+  margin-top: 16px;
+}
+
+.search-form .el-button+.el-button {
+  margin-left: 16px;
+}
+
+.search-form+.content-table {
+  margin-top: 0;
+}
+
+.search-form .el-form-item {
+  margin-right: 16px;
+}
+
+.search-form .el-form-item {
+  margin-bottom: 16px;
+}
+
+.search-form .custom-size .el-form-item__content,
+.custom-size .el-select,
+.custom-size .el-autocomplete,
+.custom-size .el-select>.el-input {
+  width: 224px;
+}
+
+.has-tag {
+  margin-bottom: 0;
+}
+
+.has-tag .choose-person-btn.el-button {
+  height: 40px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.has-tag .el-tag {
+  height: 40px;
+  line-height: 40px;
+  margin-right: 16px;
+  font-size: 14px;
+}
+
+.has-tag .el-tag .el-icon-close {
+  top: 0;
+}
+
+.input-number {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.input-380 {
+  width: 380px !important;
+}
+
+.el-table__header th {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.pri-add-btn .el-icon-circle-plus {
+  margin-right: -5px;
+  font-size: 14px;
+}
+
+.el-button--danger.is-plain,
+.el-button--info.is-plain {
+  background: #fff;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 250px;
+}
+
+.el-submenu__title {
+  height: 64px;
+  line-height: 64px;
+}
+
+.el-menu-item:hover,
+.el-submenu__title:hover {
+  outline: none;
+  background: rgba(54, 66, 255, 0.04) !important;
+}
+
+.el-menu-item.is-active {
+  background: linear-gradient(270deg, rgba(54, 66, 255, 0.08) 0%, rgba(54, 66, 255, 0) 100%);
+  position: relative;
+}
+
+.el-menu-item.is-active::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 8px;
+  right: 0;
+  width: 4px;
+  height: 32px;
+  background: rgba(54, 66, 255, 1);
+}
+
+.el-table-column--selection .cell {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.el-form-item__label {
+  padding-right: 16px;
+}
+
+.el-form-item {
+  margin-bottom: 24px;
+}
+
+.el-breadcrumb__inner.is-link {
+  color: --color-text-regular;
+  font-weight: normal;
+}
+
+.el-breadcrumb__item:last-child .el-breadcrumb__inner {
+  color: --color-text-primary;
+  font-weight: bold;
+}
+
+.el-breadcrumb__item:last-child .el-breadcrumb__inner:hover {
+  color: --color-text-primary;
+  font-weight: bold;
+}
+
+.el-textarea__inner {
+  padding: 8px 15px;
+  font-size: 14px;
+}
+
+.el-textarea textarea::-webkit-input-placeholder {
+  font-size: 14px;
+  color: rgba(192, 196, 204, 1);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.el-tooltip__popper {
+  max-width: 95%;
+  line-height: 16px;
+}

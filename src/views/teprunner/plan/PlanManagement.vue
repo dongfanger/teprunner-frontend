@@ -1,23 +1,11 @@
 <template>
   <div>
-    <project-env
-      style="float: left; margin-right: 10px"
-      v-if="$route.name === 'plan'"
-      @changeProject="changeProject"
-    ></project-env>
-    <project-env
-      style="float: left; margin-right: 10px"
-      v-if="$route.name === 'addPlan'"
-      @changeProject="changeProject"
-      :showEnv="false"
-    ></project-env>
-    <project-env
-      style="float: left; margin-right: 10px"
-      v-if="$route.name === 'editPlan'"
-      @changeProject="changeProject"
-      :showEnv="false"
-      :project-disabled="true"
-    ></project-env>
+    <project-env style="float: left; margin-right: 10px" v-if="$route.name === 'plan'"
+      @changeProject="changeProject"></project-env>
+    <project-env style="float: left; margin-right: 10px" v-if="$route.name === 'addPlan'" @changeProject="changeProject"
+      :showEnv="false"></project-env>
+    <project-env style="float: left; margin-right: 10px" v-if="$route.name === 'editPlan'" @changeProject="changeProject"
+      :showEnv="false" :project-disabled="true"></project-env>
     <div class="plan-manage-index" v-if="$route.name === 'plan'">
       <div style="float: left" class="control-list">
         <el-button type="primary" icon="el-icon-plus" @click="addPlan">
@@ -42,22 +30,12 @@
         </el-form>
 
         <div class="content-table">
-          <el-table
-            :header-cell-style="{
-              background: 'rgba(144, 147, 153, 0.06)',
-              color: 'rgba(0, 0, 0, 0.65)',
-              fontSize: '14px',
-            }"
-            :data="tableData"
-            style="width: 100%"
-          >
-            <el-table-column
-              prop="id"
-              label="计划ID"
-              width="80px"
-              align="center"
-              show-overflow-tooltip
-            ></el-table-column>
+          <el-table :header-cell-style="{
+            background: 'rgba(144, 147, 153, 0.06)',
+            color: 'rgba(0, 0, 0, 0.65)',
+            fontSize: '14px',
+          }" :data="tableData" style="width: 100%">
+            <el-table-column prop="id" label="计划ID" width="80px" align="center" show-overflow-tooltip></el-table-column>
             <el-table-column label="计划名称" prop="name" show-overflow-tooltip></el-table-column>
             <el-table-column prop="caseNum" label="用例" width="50px" align="center" show-overflow-tooltip>
               <template slot-scope="scope">
@@ -87,68 +65,25 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="elapsed"
-              label="耗时"
-              width="60px "
-              align="center"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="runEnv"
-              label="环境"
-              width="60px"
-              align="center"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="runUserNickname"
-              label="运行人"
-              width="80px"
-              align="center"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="runTime"
-              label="运行时间"
-              width="180px"
-              align="center"
-              show-overflow-tooltip
-            ></el-table-column>
+            <el-table-column prop="elapsed" label="耗时" width="60px " align="center"
+              show-overflow-tooltip></el-table-column>
+            <el-table-column prop="runEnv" label="环境" width="60px" align="center" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="runUserNickname" label="运行人" width="80px" align="center"
+              show-overflow-tooltip></el-table-column>
+            <el-table-column prop="runTime" label="运行时间" width="180px" align="center"
+              show-overflow-tooltip></el-table-column>
             <el-table-column label="操作" width="230px">
               <template slot-scope="scope">
                 <div>
-                  <el-button
-                    v-if="scope.row.caseNum > 0"
-                    type="success"
-                    icon="el-icon-video-play"
-                    size="mini"
-                    plain
-                    @click="runPlan(scope.row)"
-                    :loading="scope.row.loading"
-                  ></el-button>
+                  <el-button v-if="scope.row.caseNum > 0" type="success" icon="el-icon-video-play" size="mini" plain
+                    @click="runPlan(scope.row)" :loading="scope.row.loading"></el-button>
                   <el-button v-else disabled icon="el-icon-video-play" size="mini" plain></el-button>
-                  <el-button
-                    type="info"
-                    icon="el-icon-edit-outline"
-                    size="mini"
-                    @click="gotoPlanEditor(scope.row)"
-                    plain
-                  ></el-button>
-                  <el-button
-                    type="danger"
-                    icon="el-icon-document-delete"
-                    size="mini"
-                    @click="deletePlan(scope.row)"
-                    plain
-                  ></el-button>
-                  <el-button
-                    type="info"
-                    icon="el-icon-tickets"
-                    size="mini"
-                    @click="gotoCaseList(scope.row)"
-                    plain
-                  ></el-button>
+                  <el-button type="info" icon="el-icon-edit-outline" size="mini" @click="gotoPlanEditor(scope.row)"
+                    plain></el-button>
+                  <el-button type="danger" icon="el-icon-document-delete" size="mini" @click="deletePlan(scope.row)"
+                    plain></el-button>
+                  <el-button type="info" icon="el-icon-tickets" size="mini" @click="gotoCaseList(scope.row)"
+                    plain></el-button>
                 </div>
               </template>
             </el-table-column>
@@ -156,13 +91,8 @@
         </div>
         <div class="content-footer clear">
           <div class="block page-list self-right">
-            <vue-pagination
-              :currentPage="searchForm.page"
-              :pageSize="searchForm.perPage"
-              :totalNum="total"
-              @sizeChange="pageSizeChange"
-              @currentPageChange="pageChange"
-            />
+            <vue-pagination :currentPage="searchForm.page" :pageSize="searchForm.perPage" :totalNum="total"
+              @sizeChange="pageSizeChange" @currentPageChange="pageChange" />
           </div>
         </div>
       </div>
@@ -333,11 +263,9 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-/deep/.content-table .el-table {
-  td {
-    height: 64px;
-    line-height: 64px;
-  }
+<style>
+.content-table .el-table td {
+  height: 64px;
+  line-height: 64px;
 }
 </style>

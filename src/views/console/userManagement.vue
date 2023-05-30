@@ -30,7 +30,7 @@
           <template slot-scope="scope">
             <div>
               <el-button type="info" size="mini" plain @click="resetPWD(scope.row.id)">重置密码</el-button>
-              <el-button type="info" size="mini" plain @click="onOperate('edit', scope.row.id)">编辑</el-button>
+              <el-button type="primary" size="mini" plain @click="onOperate('edit', scope.row.id)">编辑</el-button>
               <el-button type="danger" size="mini" plain @click="onDel('删除', scope.row)">删除</el-button>
             </div>
           </template>

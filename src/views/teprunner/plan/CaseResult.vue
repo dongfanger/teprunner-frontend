@@ -36,14 +36,8 @@
         </div>
       </div>
     </div>
-    <editor
-      :value="this.caseForm.output"
-      @init="editorInit"
-      lang="text"
-      theme="monokai"
-      width="100%"
-      :height="codeHeight"
-    ></editor>
+    <editor :value="this.caseForm.output" @init="editorInit" lang="text" theme="monokai" width="100%"
+      :height="codeHeight"></editor>
   </div>
 </template>
 <script>
@@ -73,7 +67,7 @@ export default {
     this.getCaseResult();
   },
   methods: {
-    editorInit: function(editor) {
+    editorInit: function (editor) {
       require("brace/theme/monokai");
       editor.setReadOnly(true);
       editor.getSession().setUseWrapMode(true);
@@ -95,59 +89,71 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-/deep/ .form-box {
+<style>
+.form-box {
   margin-top: 16px;
-  .custom-size .el-form-item__content,
-  .custom-size .el-select,
-  .custom-size .el-select > .el-input {
-    width: 380px;
-  }
+
 }
+
+.form-box .custom-size .el-form-item__content,
+.custom-size .el-select,
+.custom-size .el-select>.el-input {
+  width: 380px;
+}
+
 .case-info-list {
   margin: 0 24px;
 }
+
 .case-name {
   font-size: 16px;
   color: rgba(0, 0, 0, 0.85);
   line-height: 22px;
   margin-top: 10px;
 }
+
 .case-info-list {
   font-size: 14px;
   line-height: 20px;
   padding-bottom: 32px;
   color: rgba(0, 0, 0, 0.65);
-  span.label {
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.45);
-  }
 }
+
+.case-info-list span.label {
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.45);
+}
+
 .info-txt {
   margin-top: 16px;
   line-height: 28px;
-  p {
-    padding-right: 30px;
-    position: relative;
-    &::after {
-      content: "";
-      display: block;
-      position: absolute;
-      right: 15px;
-      top: 6px;
-      width: 1px;
-      height: 16px;
-      background: #e6e6ea;
-    }
-    float: left;
-    &:first-child {
-      padding-left: 0;
-    }
-    &:last-child::after {
-      width: 0;
-    }
-  }
 }
+
+.info-txt p {
+  padding-right: 30px;
+  position: relative;
+  float: left;
+}
+
+.info-txt p ::after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 15px;
+  top: 6px;
+  width: 1px;
+  height: 16px;
+  background: #e6e6ea;
+}
+
+.info-txt p :first-child {
+  padding-left: 0;
+}
+
+.info-txt p :last-child::after {
+  width: 0;
+}
+
 .ace_editor {
   position: relative;
   overflow: hidden;

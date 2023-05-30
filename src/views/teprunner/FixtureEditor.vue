@@ -141,7 +141,7 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
+<style>
 .ace_editor {
   position: relative;
   overflow: hidden;

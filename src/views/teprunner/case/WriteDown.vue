@@ -1,12 +1,7 @@
 <template>
   <div class="page-wrap">
-    <el-dialog
-      :title="writeDownDialogTitle"
-      :visible="writeDownDialogFormVisible"
-      width="500px"
-      :close-on-click-modal="false"
-      @close="onResetForm"
-    >
+    <el-dialog :title="writeDownDialogTitle" :visible="writeDownDialogFormVisible" width="500px"
+      :close-on-click-modal="false" @close="onResetForm">
       <div style="text-align: left; font-size: 14px; margin: 20px">
         <h3>
           <span style="background-color:#FFE500;">Step1</span>
@@ -96,11 +91,9 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.role-list {
-  ::v-deep.el-tag {
-    margin-bottom: 15px;
-  }
+<style>
+.role-list ::v-deep.el-tag {
+  margin-bottom: 15px;
 }
 
 .ace_editor {

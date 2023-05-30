@@ -1,16 +1,8 @@
 <template>
   <el-container class="container">
     <el-aside class="aside" width="auto">
-      <el-menu
-        style="border: 0;"
-        :default-active="activePath"
-        class="auto-el-menu"
-        :collapse="isCollapse"
-        background-color="#00142a"
-        text-color="white"
-        active-text-color="white"
-        :router="true"
-      >
+      <el-menu style="border: 0;" :default-active="activePath" class="auto-el-menu" :collapse="isCollapse"
+        background-color="#00142a" text-color="white" active-text-color="white" :router="true">
         <slot name="menuItem"></slot>
       </el-menu>
     </el-aside>
@@ -20,11 +12,8 @@
           <el-breadcrumb-item @click.native="switchCollapse" style="cursor: pointer;">
             <icon-font iconClass="dakaisanshu"></icon-font>
           </el-breadcrumb-item>
-          <el-breadcrumb-item
-            v-for="(crumb, index) in routePaths"
-            :key="crumb.path"
-            :to="!crumb.meta.disabled && index < routePaths.length - 1 && { path: changeUrl(crumb.path, index) }"
-          >
+          <el-breadcrumb-item v-for="(crumb, index) in routePaths" :key="crumb.path"
+            :to="!crumb.meta.disabled && index < routePaths.length - 1 && { path: changeUrl(crumb.path, index) }">
             {{ crumb.meta.title }}
           </el-breadcrumb-item>
         </el-breadcrumb>
@@ -64,15 +53,17 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
+<style>
 .container {
   height: 100%;
   text-align: left;
-  .aside {
-    background-color: #00142a;
-    .auto-el-menu:not(.el-menu--collapse) {
-      width: 150px;
-    }
-  }
+}
+
+.container .aside {
+  background-color: #00142a;
+}
+
+.container .aside .auto-el-menu:not(.el-menu--collapse) {
+  width: 150px;
 }
 </style>

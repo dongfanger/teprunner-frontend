@@ -6,13 +6,8 @@
         <span>测试平台</span>
       </router-link>
       <ul class="header-nav">
-        <router-link
-          tag="li"
-          v-for="auth in authList"
-          :key="auth.id"
-          :to="{ name: auth.id }"
-          :class="{ current: currentActive(auth.id) }"
-        >
+        <router-link tag="li" v-for="auth in authList" :key="auth.id" :to="{ name: auth.id }"
+          :class="{ current: currentActive(auth.id) }">
           <span>{{ auth.name }}</span>
         </router-link>
       </ul>
@@ -45,42 +40,20 @@
           </el-dropdown-menu>
         </el-dropdown>
       </div>
-      <el-dialog
-        title="修改密码"
-        width="700px"
-        :modal-append-to-body="false"
-        :visible.sync="passwordDialog"
-        :close-on-click-modal="false"
-      >
+      <el-dialog title="修改密码" width="700px" :modal-append-to-body="false" :visible.sync="passwordDialog"
+        :close-on-click-modal="false">
         <el-form :model="form" :rules="rules" ref="form" label-width="150px" label-position="right">
           <el-form-item label="当前密码" prop="old">
-            <el-input
-              class="input-380"
-              v-model.trim="form.old"
-              placeholder="请输入"
-              type="password"
-              show-password
-              @input="clearChinese($event, 'old')"
-            ></el-input>
+            <el-input class="input-380" v-model.trim="form.old" placeholder="请输入" type="password" show-password
+              @input="clearChinese($event, 'old')"></el-input>
           </el-form-item>
           <el-form-item label="新密码" prop="new">
-            <el-input
-              class="input-380"
-              v-model.trim="form.new"
-              placeholder="请输入"
-              type="password"
-              show-password
-              @input="clearChinese($event, 'new')"
-            ></el-input>
+            <el-input class="input-380" v-model.trim="form.new" placeholder="请输入" type="password" show-password
+              @input="clearChinese($event, 'new')"></el-input>
           </el-form-item>
           <el-form-item label="确认新密码" prop="repeat">
-            <el-input
-              class="input-380"
-              v-model.trim="form.repeat"
-              placeholder="请输入"
-              type="password"
-              show-password
-            ></el-input>
+            <el-input class="input-380" v-model.trim="form.repeat" placeholder="请输入" type="password"
+              show-password></el-input>
           </el-form-item>
         </el-form>
         <p class="pwd-ts">注：{{ pwdRegText }}</p>
@@ -89,13 +62,8 @@
           <el-button type="primary" @click="submit" :loading="loading">确 定</el-button>
         </span>
       </el-dialog>
-      <el-dialog
-        title="个人信息"
-        width="500px"
-        :modal-append-to-body="false"
-        :visible.sync="userInfoDialog"
-        :close-on-click-modal="false"
-      >
+      <el-dialog title="个人信息" width="500px" :modal-append-to-body="false" :visible.sync="userInfoDialog"
+        :close-on-click-modal="false">
         <el-form label-width="150px" label-position="right">
           <el-form-item label="用户名：">{{ userInfo.username }}</el-form-item>
           <el-form-item label="昵称：">{{ userInfo.nickname }}</el-form-item>
@@ -254,16 +222,17 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style>
 * {
   box-sizing: border-box;
 }
 
 .el-menu-item {
   background-color: #ebf1f6;
-  &.is-active {
-    background-color: #188fff !important;
-  }
+}
+
+.el-menu-item .is-active {
+  background-color: #188fff !important;
 }
 
 .el-submenu [class^="fa"] {
@@ -294,32 +263,37 @@ export default {
   align-items: center;
   border-bottom: 1px solid #ddd;
   margin-bottom: 20px;
-  .q-icon {
-    display: block;
-    margin-right: 5px;
-    color: #33c0fb;
-    font-size: 18px;
-  }
-  .el-breadcrumb {
-    font-size: 16px;
-  }
+}
+
+.q-crumb .q-icon {
+  display: block;
+  margin-right: 5px;
+  color: #33c0fb;
+  font-size: 18px;
+}
+
+.q-crumb .el-breadcrumb {
+  font-size: 16px;
 }
 
 .user-action {
   width: 150px;
-  .el-dropdown-menu__item {
-    font-size: 14px;
-    height: 40px;
-    i {
-      margin: 0 8px 0 10px;
-    }
-  }
-  &.el-dropdown-menu--mini .el-dropdown-menu__item {
-    line-height: 40px;
-  }
+}
+
+.user-action .el-dropdown-menu__item {
+  font-size: 14px;
+  height: 40px;
+}
+
+.user-action .el-dropdown-menu__item i {
+  margin: 0 8px 0 10px;
+}
+
+.user-action .el-dropdown-menu--mini .el-dropdown-menu__item {
+  line-height: 40px;
 }
 </style>
-<style lang="scss" scoped>
+<style>
 .top-sidebar {
   margin: 20px auto 0;
   padding: 0;
@@ -330,22 +304,26 @@ export default {
   width: 300px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  li {
-    flex: 1;
-    list-style: none;
-    cursor: pointer;
-    border-left: 1px solid #ccc;
-    text-align: center;
-    &:first-child {
-      border-left: none;
-    }
-    span {
-      margin-left: 5px;
-    }
-    &.router-link-exact-active {
-      color: #317ffe;
-    }
-  }
+}
+
+.top-sidebar li {
+  flex: 1;
+  list-style: none;
+  cursor: pointer;
+  border-left: 1px solid #ccc;
+  text-align: center;
+}
+
+.top-sidebar li :first-child {
+  border-left: none;
+}
+
+.top-sidebar li span {
+  margin-left: 5px;
+}
+
+.top-sidebar li .router-link-exact-active {
+  color: #317ffe;
 }
 
 .header {
@@ -360,23 +338,26 @@ export default {
   align-items: center;
   background: #00142a;
   z-index: 100;
-  .logo {
-    text-decoration: none;
-    img {
-      width: 40px;
-      margin-right: 10px;
-      vertical-align: middle;
-    }
-    span {
-      line-height: 64px;
-      color: #fff;
-      text-align: center;
-      font-size: 20px;
-      font-weight: 600;
-      text-decoration: none;
-      vertical-align: middle;
-    }
-  }
+}
+
+.header .logo {
+  text-decoration: none;
+}
+
+.header .logo img {
+  width: 40px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.header .logo span {
+  line-height: 64px;
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  vertical-align: middle;
 }
 
 .push-sidebar {
@@ -398,56 +379,60 @@ export default {
 .user-info {
   display: flex;
   align-items: center;
-  .el-dropdown-link {
-    outline: none;
-  }
-  .cur-user {
-    img {
-      width: 30px;
-      height: 30px;
-      margin: 0 8px 0 12px;
-      border-radius: 4px;
-      &.default {
-        width: 24px;
-        height: 24px;
-      }
-    }
-  }
-  .self-info {
-    margin-left: 15px;
-    .el-popover__reference {
-      color: #fff;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .fa {
-      color: #317ffe;
-      font-size: 18px;
-      margin-right: 5px;
-    }
-  }
 }
 
-.self-content {
-  li {
-    margin-bottom: 5px;
-    label {
-      color: #999;
-    }
-  }
+.user-info .el-dropdown-link {
+  outline: none;
+}
+
+.user-info .cur-user img {
+  width: 30px;
+  height: 30px;
+  margin: 0 8px 0 12px;
+  border-radius: 4px;
+}
+
+.user-info .cur-user img .default {
+  width: 24px;
+  height: 24px;
+}
+
+.user-info .self-info {
+  margin-left: 15px;
+}
+
+.user-info .self-info .el-popover__reference {
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.user-info .self-info .fa {
+  color: #317ffe;
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+.self-content li {
+  margin-bottom: 5px;
+}
+
+.self-content li label {
+  color: #999;
 }
 
 .login-user {
   display: flex;
   align-items: center;
-  span {
-    display: block;
-    color: #fff;
-  }
+}
+
+.login-user span {
+  display: block;
+  color: #fff;
 }
 
 .el-main {
-  padding: 0;
+  padding: 0 !important;
 }
 
 .header-nav {
@@ -457,28 +442,27 @@ export default {
   color: #fff;
   width: 550px;
   height: 100%;
-  li {
-    // flex:1;
-    height: 100%;
-    padding: 0 21px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    cursor: pointer;
-    &.current {
-      &::after {
-        content: "";
-        position: absolute;
-        display: block;
-        left: 0;
-        bottom: 0;
-        height: 5px;
-        width: 100%;
-        background-color: #1b73ff;
-      }
-    }
-  }
+}
+
+.header-nav li {
+  height: 100%;
+  padding: 0 21px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.header-nav li .current ::after {
+  content: "";
+  position: absolute;
+  display: block;
+  left: 0;
+  bottom: 0;
+  height: 5px;
+  width: 100%;
+  background-color: #1b73ff;
 }
 
 .pwd-ts {
@@ -486,5 +470,4 @@ export default {
   color: rgba(0, 0, 0, 0.25);
   margin-bottom: 14px;
   margin-left: 64px;
-}
-</style>
+}</style>

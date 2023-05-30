@@ -4,7 +4,8 @@ import router from "./router";
 import axios from "./service/axios";
 import Element from "element-ui";
 
-import "./assets/css/common.scss";
+import 'element-ui/lib/theme-chalk/index.css';
+import "./assets/css/common.css";
 import "./assets/css/font.css";
 
 import IconFont from "@/components/IconFont.vue";

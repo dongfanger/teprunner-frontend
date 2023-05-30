@@ -214,7 +214,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style>
 pre {
   width: 800px;
   margin-top: 10px;
