@@ -1,6 +1,6 @@
 # teprunner-frontend
 
-全新2.0版本火热开发中
+全新2.0版本火热开发中，优先更新在Gitee，阶段性成果会同步到GitHub
 
 使用：1、npm install 安装依赖包，对node版本无要求，最新版本也支持
 
