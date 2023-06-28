@@ -2,12 +2,6 @@
   <div>
     <WrapComponent v-if="$route.name === 'case'" tableTitle="全部用例">
       <ProjectEnv slot="projectEnv" @changeProject="changeProject"></ProjectEnv>
-      <el-button type="primary" class="pri-add-btn" icon="el-icon-plus" @click="addCase" slot="operate">
-        新增用例
-      </el-button>
-      <el-button type="info" class="pri-add-btn" icon="el-icon-download" @click="writeDown" slot="operate">
-        下载环境
-      </el-button>
       <el-form slot="form" :model="searchForm" ref="searchFormRef" :inline="true" class="search-form">
         <el-form-item label="用例ID" prop="id">
           <el-input v-model="searchForm.id" placeholder="精确匹配" style="width: 200px"></el-input>
@@ -92,49 +86,6 @@
                 plain
                 @click="gotoCaseResult('run', scope.row)"
               ></el-button>
-              <el-button
-                v-if="scope.row.source === 'platform'"
-                type="info"
-                icon="el-icon-edit-outline"
-                size="mini"
-                plain
-                @click="gotoCaseEditor(scope.row)"
-              ></el-button>
-              <el-button
-                v-if="scope.row.source === 'git'"
-                disabled
-                type="info"
-                style="background-color: #eeeeee; color: gray; border-color: #eeeeee"
-                icon="el-icon-edit-outline"
-                size="mini"
-                plain
-                @click="gotoCaseEditor(scope.row)"
-              ></el-button>
-              <el-button
-                v-if="scope.row.source === 'platform'"
-                type="danger"
-                icon="el-icon-document-delete"
-                size="mini"
-                plain
-                @click="onDel('删除', scope.row)"
-              ></el-button>
-              <el-button
-                v-if="scope.row.source === 'git'"
-                disabled
-                type="danger"
-                style="background-color: #eeeeee; color: gray; border-color: #eeeeee"
-                icon="el-icon-document-delete"
-                size="mini"
-                plain
-                @click="onDel('删除', scope.row)"
-              ></el-button>
-              <el-button
-                type="warning"
-                icon="el-icon-document-copy"
-                size="mini"
-                plain
-                @click="onCopy(scope.row.id)"
-              ></el-button>
             </div>
           </template>
         </el-table-column>
@@ -148,31 +99,23 @@
 
     <router-view></router-view>
 
-    <writeDownDialog
-      :writeDownDialogFormVisible.sync="writeDownDialogFormVisible"
-      :writeDownDialogTitle="writeDownDialogTitle"
-    />
   </div>
 </template>
 
 <script>
 import WrapComponent from "@/components/WrapComponent";
-import { delConfirm, filterNullValue, isProjectExisted, resultColor, trimStr } from "@/utils/commonMethods";
+import { filterNullValue, resultColor, trimStr } from "@/utils/commonMethods";
 import ProjectEnv from "@/components/ProjectEnv";
-import writeDown from "@/views/teprunner/case/WriteDown";
 
 export default {
   name: "CaseManagement",
   components: {
     WrapComponent,
     ProjectEnv,
-    writeDownDialog: writeDown,
   },
   data() {
     return {
       loading: false,
-      writeDownDialogFormVisible: false,
-      writeDownDialogTitle: "下载环境",
       searchForm: {
         id: "",
         desc: "",
@@ -242,23 +185,6 @@ export default {
           this.loading = false;
         });
     },
-    addCase() {
-      if (!isProjectExisted()) {
-        this.$notifyMessage(`请先创建项目`, { type: "error" });
-        return;
-      }
-      localStorage.removeItem("caseInfo");
-      this.$router.push({
-        name: "addCase",
-      });
-    },
-    gotoCaseEditor(row) {
-      let rowInfo = JSON.stringify(row);
-      localStorage.setItem("caseInfo", rowInfo);
-      this.$router.push({
-        name: "editCase",
-      });
-    },
     gotoCaseResult(type, row) {
       row.caseResultType = type;
       let rowInfo = JSON.stringify(row);
@@ -267,53 +193,8 @@ export default {
         name: "case.caseResult",
       });
     },
-    onDel(btnText, row) {
-      delConfirm(
-        `是否${btnText}此用例？`,
-        () => {
-          this.operateRow(btnText, row);
-        },
-        {
-          confirmButtonText: btnText,
-        },
-      );
-    },
-    operateRow(btnText, { id }) {
-      let $url;
-      let $method;
-      let params = {};
-      if (btnText === "删除") {
-        $url = `/teprunner/cases/${id}`;
-        $method = "delete";
-      }
-      this.$http[$method]($url, params).then(() => {
-        this.$notifyMessage(`${btnText}成功`, { type: "success" });
-        this.getCaseList();
-      });
-    },
     getResultColor(res) {
       return resultColor(res);
-    },
-    writeDown() {
-      if (!isProjectExisted()) {
-        this.$notifyMessage(`请先创建项目`, { type: "error" });
-        return;
-      }
-      this.writeDownDialogFormVisible = true;
-    },
-    onCopy(id = "") {
-      this.isLoading = true;
-      let creatorNickname = JSON.parse(localStorage.getItem("userInfo")).nickname;
-      let params = {
-        creatorNickname,
-      };
-      this.$http
-        .post(`/teprunner/cases/${id}/copy`, params)
-        .then(() => {})
-        .finally(() => {
-          this.isLoading = false;
-          this.getCaseList();
-        });
     },
     changeProject() {
       this.pageParams = {

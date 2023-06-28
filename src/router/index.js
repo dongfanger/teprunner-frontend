@@ -41,39 +41,6 @@ const routes = [
             component: () => import("@/views/teprunner/Workspace.vue"),
           },
           {
-            path: "envVar",
-            meta: {
-              title: "环境变量",
-            },
-            component: () => import("@/views/teprunner/EnvVar.vue"),
-          },
-          {
-            path: "fixture",
-            name: "fixture",
-            meta: {
-              title: "fixtures",
-            },
-            component: () => import("@/views/teprunner/Fixture.vue"),
-            children: [
-              {
-                path: "addFixture",
-                name: "addFixture",
-                meta: {
-                  title: "新增 fixture",
-                },
-                component: () => import("@/views/teprunner/FixtureEditor"),
-              },
-              {
-                path: "editFixture",
-                name: "editFixture",
-                meta: {
-                  title: "编辑 fixture",
-                },
-                component: () => import("@/views/teprunner/FixtureEditor"),
-              },
-            ],
-          },
-          {
             path: "case",
             name: "case",
             meta: {
@@ -81,22 +48,6 @@ const routes = [
             },
             component: () => import("@/views/teprunner/case/CaseManagement.vue"),
             children: [
-              {
-                path: "addCase",
-                name: "addCase",
-                meta: {
-                  title: "新增用例",
-                },
-                component: () => import("@/views/teprunner/case/CaseEditor"),
-              },
-              {
-                path: "editCase",
-                name: "editCase",
-                meta: {
-                  title: "编辑用例",
-                },
-                component: () => import("@/views/teprunner/case/CaseEditor"),
-              },
               {
                 path: "caseView",
                 name: "caseView",
