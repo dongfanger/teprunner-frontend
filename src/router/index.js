@@ -22,7 +22,7 @@ const routes = [
       requireAuth: true,
     },
     component: home,
-    redirect: "teprunner/grammar",
+    redirect: "teprunner/workspace",
     children: [
       {
         path: "teprunner",
@@ -31,14 +31,14 @@ const routes = [
           title: "接口自动化",
         },
         component: teprunner,
-        redirect: "teprunner/grammar",
+        redirect: "teprunner/workspace",
         children: [
           {
-            path: "grammar",
+            path: "workspace",
             meta: {
-              title: "语法说明",
+              title: "工作台",
             },
-            component: () => import("@/views/teprunner/Grammar.vue"),
+            component: () => import("@/views/teprunner/Workspace.vue"),
           },
           {
             path: "envVar",

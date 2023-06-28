@@ -1,9 +1,9 @@
 <template>
   <NavLeft>
     <div slot="menuItem">
-      <el-menu-item index="/teprunner/grammar">
-        <i class="el-icon-s-opportunity"></i>
-        <span slot="title">语法说明</span>
+      <el-menu-item index="/teprunner/workspace">
+        <i class="el-icon-s-home"></i>
+        <span slot="title">工作台</span>
       </el-menu-item>
       <el-menu-item index="/teprunner/envVar">
         <i class="el-icon-coin"></i>
