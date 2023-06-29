@@ -8,7 +8,6 @@
         <div class="info-txt clear">
           <span class="label">用例描述：</span>
           {{ this.caseForm.desc }}
-          <el-button style="float: right;" type="primary" @click="onEditCase">编辑用例</el-button>
           <br />
           <p>
             <span class="label">创建人：</span>
@@ -155,12 +154,6 @@ export default {
     destroyed() {
       this.socket.close();
       this.onResetForm();
-    },
-    onEditCase() {
-      localStorage.setItem("caseInfo", JSON.stringify(this.caseInfo));
-      this.$router.push({
-        name: "editCase",
-      });
     },
   },
 };

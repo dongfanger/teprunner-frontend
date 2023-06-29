@@ -470,4 +470,6 @@ export default {
   color: rgba(0, 0, 0, 0.25);
   margin-bottom: 14px;
   margin-left: 64px;
-}</style>
+}
+
+</style>
