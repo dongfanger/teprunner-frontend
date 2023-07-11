@@ -10,7 +10,9 @@
 
 用户名：admin 密码：qa123456
 
-历史1.0版本：https://github.com/dongfanger/teprunner-frontend/releases/tag/1.0
+---
+
+历史1.0版本：https://gitee.com/dongfanger/teprunner-frontend/releases/tag/1.0
 
 学习资料：
 
