@@ -1,18 +1,17 @@
 <template>
   <div>
     <div class="container">
-      <div class="left-panel">
-        <el-dropdown @command="handleCommand">
-          <span class="el-dropdown-link">{{ selectedLabel }}<i class="el-icon-arrow-down el-icon--right"></i></span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="option in options" :key="option.value" :command="option.value">
-              {{ option.label }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <el-input v-model="searchText" placeholder="搜索" @input="handleSearch"></el-input>
-        <el-tree :data="filteredTreeData" :props="defaultProps" node-key="id" @node-click="handleNodeClick"></el-tree>
-      </div>
+<!--      <div class="left-panel">-->
+<!--        <el-dropdown @command="handleCommand">-->
+<!--          <span class="el-dropdown-link">{{ selectedLabel }}<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i></span>-->
+<!--          <el-dropdown-menu slot="dropdown">-->
+<!--            <el-dropdown-item v-for="option in options" :key="option.value" :command="option.value">-->
+<!--              {{ option.label }}-->
+<!--            </el-dropdown-item>-->
+<!--          </el-dropdown-menu>-->
+<!--        </el-dropdown>-->
+<!--        <el-tree :data="filteredTreeData" :props="defaultProps" node-key="id" @node-click="handleNodeClick"></el-tree>-->
+<!--      </div>-->
       <div class="right-panel">
         <div v-if="selectedNode">
           <h3>{{ selectedNode.label }}</h3>
@@ -217,10 +216,6 @@ export default {
         }
       }
       return filteredNodes;
-    },
-    handleSearch() {
-      // 处理搜索输入事件
-      // 这里可以进行一些搜索结果的处理，如更新展示区域等操作
     },
     handleCommand(command) {
       this.selectedOption = command;

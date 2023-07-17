@@ -11,7 +11,7 @@
       </el-menu-item>
       <el-menu-item index="/teprunner/plan">
         <i class="el-icon-alarm-clock"></i>
-        <span slot="title">测试计划</span>
+        <span slot="title">定时任务</span>
       </el-menu-item>
       <el-menu-item index="/teprunner/gitSync">
         <i class="el-icon-attract"></i>
