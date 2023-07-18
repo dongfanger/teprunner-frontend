@@ -2,13 +2,13 @@
   <div>
     <div class="content-info">
       <div class="content-header">
-        <div class="info-name">任务信息</div>
+        <div class="info-name">计划信息</div>
       </div>
-      <div class="task-info-list">
+      <div class="plan-info-list">
         <div class="info-txt clear">
           <p>
-            <span class="label">任务名称：</span>
-            {{ taskInfo.name }}
+            <span class="label">计划名称：</span>
+            {{ planInfo.name }}
           </p>
           <p>
             <span class="label">所属项目：</span>
@@ -38,16 +38,30 @@
         </el-form-item>
       </el-form>
       <div class="content-table">
-        <el-table :header-cell-style="{
-          background: 'rgba(144, 147, 153, 0.06)',
-          color: 'rgba(0, 0, 0, 0.65)',
-          fontSize: '14px',
-        }" :data="tableData" style="width: 100%">
-          <el-table-column prop="caseId" label="用例ID" width="300px" align="center"
-            show-overflow-tooltip></el-table-column>
+        <el-table
+          :header-cell-style="{
+            background: 'rgba(144, 147, 153, 0.06)',
+            color: 'rgba(0, 0, 0, 0.65)',
+            fontSize: '14px',
+          }"
+          :data="tableData"
+          style="width: 100%"
+        >
+          <el-table-column
+            prop="caseId"
+            label="用例ID"
+            width="300px"
+            align="center"
+            show-overflow-tooltip
+          ></el-table-column>
           <el-table-column prop="caseDesc" label="用例描述" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="caseCreatorNickname" label="创建人" width="300px" align="center"
-            show-overflow-tooltip></el-table-column>
+          <el-table-column
+            prop="caseCreatorNickname"
+            label="创建人"
+            width="300px"
+            align="center"
+            show-overflow-tooltip
+          ></el-table-column>
           <el-table-column label="操作" width="200px">
             <template slot-scope="scope">
               <div>
@@ -59,15 +73,31 @@
       </div>
       <div class="content-footer clear">
         <div class="block page-list self-right">
-          <vue-pagination :currentPage="searchForm.page" :pageSize="searchForm.perPage" :totalNum="total"
-            @sizeChange="pageSizeChange" @currentPageChange="pageChange" />
+          <vue-pagination
+            :currentPage="searchForm.page"
+            :pageSize="searchForm.perPage"
+            :totalNum="total"
+            @sizeChange="pageSizeChange"
+            @currentPageChange="pageChange"
+          />
         </div>
       </div>
     </div>
-    <selection-panel title="选择用例" ref="addCase" :selectedItem="addCase.selectedItem" :singleChoice="false"
-      placeholder="请输入用例ID或用例描述" :columns="addCase.tableColumns" :tableData="addCase.tableData" :show="addCase.show"
-      :pageSize="10" :total="addCase.total" :loading="addCase.loading" @confirm="addCaseSelection"
-      @dataChange="dataChange"></selection-panel>
+    <selection-panel
+      title="选择用例"
+      ref="addCase"
+      :selectedItem="addCase.selectedItem"
+      :singleChoice="false"
+      placeholder="请输入用例ID或用例描述"
+      :columns="addCase.tableColumns"
+      :tableData="addCase.tableData"
+      :show="addCase.show"
+      :pageSize="10"
+      :total="addCase.total"
+      :loading="addCase.loading"
+      @confirm="addCaseSelection"
+      @dataChange="dataChange"
+    ></selection-panel>
   </div>
 </template>
 <script>
@@ -110,15 +140,15 @@ export default {
       },
       tableData: [],
       currentPage: 1,
-      taskInfo: null,
+      planInfo: null,
       total: 0,
       projectName: "",
     };
   },
   created() {
-    let info = localStorage.getItem("taskInfo");
+    let info = localStorage.getItem("planInfo");
     info = JSON.parse(info) || {};
-    this.taskInfo = {
+    this.planInfo = {
       name: info.name,
       caseNum: info.caseNum,
       id: info.id,
@@ -129,7 +159,7 @@ export default {
   },
   methods: {
     async getTableData() {
-      let url = `/teprunner/tasks/${this.taskInfo.id}/cases`;
+      let url = `/teprunner/plans/${this.planInfo.id}/cases`;
       let params = [];
       let keys = Object.keys(this.searchForm);
       keys.forEach(key => {
@@ -159,7 +189,7 @@ export default {
       })
         .then(async () => {
           this.isLoading = true;
-          let url = `/teprunner/tasks/${this.taskInfo.id}/cases/${row.caseId}`;
+          let url = `/teprunner/plans/${this.planInfo.id}/cases/${row.caseId}`;
           await this.$http
             .delete(url)
             .then(async res => {
@@ -175,7 +205,7 @@ export default {
               this.isLoading = false;
             });
         })
-        .catch(() => { });
+        .catch(() => {});
     },
     async panelToggle() {
       this.addCase.loading = true;
@@ -189,7 +219,7 @@ export default {
     },
     addCaseSelection(data) {
       if (data && data.length) {
-        let url = `/teprunner/tasks/${this.taskInfo.id}/cases`;
+        let url = `/teprunner/plans/${this.planInfo.id}/cases`;
         let addCaseIds = data.map(item => item.id);
         let params = {
           caseIds: addCaseIds,
@@ -219,7 +249,7 @@ export default {
         page,
         keyword: keyword,
         perPage: 10,
-        excludeTaskId: this.taskInfo.id,
+        excludePlanId: this.planInfo.id,
         projectId,
       };
       let url = `/teprunner/cases`;
@@ -260,83 +290,72 @@ export default {
   },
 };
 </script>
-<style>
-.form-box {
+<style lang="scss" scoped>
+/deep/ .form-box {
   margin-top: 16px;
+  .custom-size .el-form-item__content,
+  .custom-size .el-select,
+  .custom-size .el-select > .el-input {
+    width: 380px;
+  }
 }
-
-.form-box .custom-size .el-form-item__content,
-.custom-size .el-select,
-.custom-size .el-select>.el-input {
-  width: 380px;
-}
-
-.task-info-list {
+.plan-info-list {
   margin: 0 24px;
 }
-
-.task-name {
+.plan-name {
   font-size: 16px;
   color: rgba(0, 0, 0, 0.85);
   line-height: 22px;
   margin-top: 10px;
 }
-
-.task-info-list {
+.plan-info-list {
   font-size: 14px;
   line-height: 20px;
   padding-bottom: 32px;
   color: rgba(0, 0, 0, 0.65);
+  span.label {
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.45);
+  }
 }
-
-.task-info-list span.label {
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.45);
-}
-
 .info-txt {
   margin-top: 16px;
   line-height: 28px;
+  p {
+    padding-right: 30px;
+    position: relative;
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      right: 15px;
+      top: 6px;
+      width: 1px;
+      height: 16px;
+      background: #e6e6ea;
+    }
+    float: left;
+    &:first-child {
+      padding-left: 0;
+    }
+    &:last-child::after {
+      width: 0;
+    }
+  }
 }
 
-.info-txt p {
-  padding-right: 30px;
-  position: relative;
-  float: left;
-}
-
-.info-txt p ::after {
-  content: "";
-  display: block;
-  position: absolute;
-  right: 15px;
-  top: 6px;
-  width: 1px;
-  height: 16px;
-  background: #e6e6ea;
-}
-
-.info-txt p :first-child {
-  padding-left: 0;
-}
-
-.info-txt p :last-child::after {
-  width: 0;
-}
-
-.task-describe {
+.plan-describe {
   margin-top: 15px;
+  .plan-describe-txt {
+    margin-left: 70px;
+  }
 }
-
-.task-describe .task-describe-txt {
-  margin-left: 70px;
-}
-
 .case-list {
   margin-top: 24px;
 }
-
-.add-case .el-button {
-  padding: 11px 20px;
+.add-case {
+  .el-button {
+    padding: 11px 20px;
+  }
 }
 </style>

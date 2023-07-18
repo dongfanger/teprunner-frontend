@@ -1,11 +1,11 @@
 <template>
   <el-form :inline="true">
-    <el-form-item label="" v-if="showProject">
+    <el-form-item label="项目" v-if="showProject">
       <el-select v-model="curProjectName" @change="changeProject" @click.native="getProjectList">
         <el-option v-for="(item, index) in projectList" :key="index" :label="item" :value="item"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="" v-if="showEnv">
+    <el-form-item label="环境" v-if="showEnv">
       <el-select v-model="curEnvName" @change="changeEnv" @click.native="getEnvList">
         <el-option v-for="(item, index) in envList" :key="index" :label="item" :value="item"></el-option>
       </el-select>

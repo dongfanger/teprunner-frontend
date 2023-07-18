@@ -6,7 +6,11 @@
           <el-input v-model="projectForm.name" placeholder="请输入项目名称" class="input-380"></el-input>
         </el-form-item>
         <el-form-item label="环境配置" prop="envConfig">
-          <el-input v-model="projectForm.envConfig" placeholder="请输入环境英文名（多个环境英文逗号分隔）" class="input-380"></el-input>
+          <el-input
+            v-model="projectForm.envConfig"
+            placeholder="请输入环境英文名（多个环境英文逗号分隔）"
+            class="input-380"
+          ></el-input>
         </el-form-item>
         <el-form-item label="Git仓库" prop="gitRepository">
           <el-input v-model="projectForm.gitRepository" placeholder="请输入代码仓库地址" class="input-380"></el-input>
@@ -142,8 +146,10 @@ export default {
 };
 </script>
 
-<style>
-.role-list ::v-deep.el-tag {
-  margin-bottom: 15px;
+<style scoped lang="scss">
+.role-list {
+  ::v-deep.el-tag {
+    margin-bottom: 15px;
+  }
 }
 </style>

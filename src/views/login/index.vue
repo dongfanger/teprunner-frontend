@@ -8,17 +8,31 @@
       <div class="login-info">
         <el-form ref="form" class="form-box" :model="form" :rules="formRules">
           <el-form-item label="用户名" prop="username">
-            <el-input v-model="form.username" placeholder="请输入用户名" @keyup.enter.native="login"
-              ref="username-input"></el-input>
+            <el-input
+              v-model="form.username"
+              placeholder="请输入用户名"
+              @keyup.enter.native="login"
+              ref="username-input"
+            ></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
-            <el-input v-model="form.password" placeholder="请输入密码" type="password" show-password
-              @keyup.enter.native="login"></el-input>
+            <el-input
+              v-model="form.password"
+              placeholder="请输入密码"
+              type="password"
+              show-password
+              @keyup.enter.native="login"
+            ></el-input>
           </el-form-item>
           <el-form-item>
             <div class="clear">
-              <el-checkbox v-model="form.rememberMe" :value="true" label="记住密码" name="type"
-                class="remember-checkbox"></el-checkbox>
+              <el-checkbox
+                v-model="form.rememberMe"
+                :value="true"
+                label="记住密码"
+                name="type"
+                class="remember-checkbox"
+              ></el-checkbox>
               <span class="self-right forgetPwd" @click="forgetPwd">忘记密码？</span>
             </div>
           </el-form-item>
@@ -125,7 +139,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .login-body {
   position: absolute;
   width: 100%;
@@ -134,7 +148,6 @@ export default {
   min-height: 600px;
   min-width: 480px;
 }
-
 .login-box {
   width: 480px;
   background: #fff;
@@ -146,7 +159,6 @@ export default {
   top: 50%;
   margin: -300px auto 0;
 }
-
 .login-title {
   font-size: 24px;
   color: rgba(0, 0, 0, 0.85);
@@ -154,24 +166,20 @@ export default {
   text-align: center;
   margin-top: 64px;
   margin-bottom: 32px;
+  .logo-text {
+    line-height: 1;
+    margin-top: 16px;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.45);
+  }
 }
-
-.login-title .logo-text {
-  line-height: 1;
-  margin-top: 16px;
-  font-size: 16px;
-  color: rgba(0, 0, 0, 0.45);
-}
-
 .login-logo {
   max-width: 159px;
   max-height: 56px;
 }
-
 .form-box {
   margin: 0 70px;
 }
-
 .form-title {
   font-size: 20px;
   text-align: center;
@@ -180,22 +188,20 @@ export default {
   padding-bottom: 20px;
   color: #3aaaf5;
 }
-
 .forgetPwd {
   cursor: pointer;
   font-size: 12px;
   color: rgba(0, 0, 0, 0.65);
+  &:hover {
+    color: #3642ff;
+  }
 }
-
-.forgetPwd :hover {
-  color: #3642ff;
+.remember-checkbox {
+  ::v-deep.el-checkbox__label {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.65) !important;
+  }
 }
-
-.remember-checkbox ::v-deep.el-checkbox__label {
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.65) !important;
-}
-
 .login-btn {
   width: 100%;
   margin-top: 16px;

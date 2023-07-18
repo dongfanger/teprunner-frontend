@@ -22,7 +22,7 @@ const routes = [
       requireAuth: true,
     },
     component: home,
-    redirect: "teprunner/workspace",
+    redirect: "teprunner/grammar",
     children: [
       {
         path: "teprunner",
@@ -31,38 +31,113 @@ const routes = [
           title: "接口自动化",
         },
         component: teprunner,
-        redirect: "teprunner/workspace",
+        redirect: "teprunner/grammar",
         children: [
           {
-            path: "workspace",
+            path: "grammar",
             meta: {
-              title: "工作台",
+              title: "语法说明",
             },
-            component: () => import("@/views/teprunner/Workspace.vue"),
+            component: () => import("@/views/teprunner/Grammar.vue"),
           },
           {
-            path: "task",
-            name: "task",
+            path: "envVar",
             meta: {
-              title: "任务管理",
+              title: "环境变量",
             },
-            component: () => import("@/views/teprunner/task/TaskManagement.vue"),
+            component: () => import("@/views/teprunner/EnvVar.vue"),
+          },
+          {
+            path: "fixture",
+            name: "fixture",
+            meta: {
+              title: "fixtures",
+            },
+            component: () => import("@/views/teprunner/Fixture.vue"),
             children: [
               {
-                path: "addTask",
-                name: "addTask",
+                path: "addFixture",
+                name: "addFixture",
                 meta: {
-                  title: "添加任务",
+                  title: "新增 fixture",
                 },
-                component: () => import("@/views/teprunner/task/TaskEditor"),
+                component: () => import("@/views/teprunner/FixtureEditor"),
               },
               {
-                path: "editTask",
-                name: "editTask",
+                path: "editFixture",
+                name: "editFixture",
                 meta: {
-                  title: "编辑任务",
+                  title: "编辑 fixture",
                 },
-                component: () => import("@/views/teprunner/task/TaskEditor"),
+                component: () => import("@/views/teprunner/FixtureEditor"),
+              },
+            ],
+          },
+          {
+            path: "case",
+            name: "case",
+            meta: {
+              title: "用例管理",
+            },
+            component: () => import("@/views/teprunner/case/CaseManagement.vue"),
+            children: [
+              {
+                path: "addCase",
+                name: "addCase",
+                meta: {
+                  title: "新增用例",
+                },
+                component: () => import("@/views/teprunner/case/CaseEditor"),
+              },
+              {
+                path: "editCase",
+                name: "editCase",
+                meta: {
+                  title: "编辑用例",
+                },
+                component: () => import("@/views/teprunner/case/CaseEditor"),
+              },
+              {
+                path: "caseView",
+                name: "caseView",
+                meta: {
+                  title: "查看用例",
+                },
+                component: () => import("@/views/teprunner/case/CaseView"),
+              },
+              {
+                path: "caseResult",
+                name: "case.caseResult",
+                meta: {
+                  title: "用例运行结果",
+                },
+                component: () => import("@/views/teprunner/case/CaseResult"),
+              },
+            ],
+          },
+          {
+            path: "plan",
+            name: "plan",
+            meta: {
+              title: "测试计划",
+            },
+            component: () => import("@/views/teprunner/plan/PlanManagement.vue"),
+            children: [
+              {
+                path: "addPlan",
+                name: "addPlan",
+                meta: {
+                  title: "添加计划",
+                },
+                component: () => import("@/views/teprunner/plan/PlanEditor"),
+              },
+              {
+                path: "editPlan",
+                name: "editPlan",
+                meta: {
+                  title: "编辑计划",
+                },
+                component: () => import("@/views/teprunner/plan/PlanEditor"),
               },
               {
                 path: "caseList",
@@ -70,15 +145,25 @@ const routes = [
                 meta: {
                   title: "用例列表",
                 },
-                component: () => import("@/views/teprunner/task/CaseList"),
+                component: () => import("@/views/teprunner/plan/CaseList"),
               },
               {
-                path: "taskResult",
-                name: "taskResult",
+                path: "planResult",
+                name: "planResult",
                 meta: {
-                  title: "任务运行结果",
+                  title: "计划运行结果",
                 },
-                component: () => import("@/views/teprunner/task/TaskResult"),
+                component: () => import("@/views/teprunner/plan/PlanResult"),
+                children: [
+                  {
+                    path: "caseResult",
+                    name: "plan.caseResult",
+                    meta: {
+                      title: "用例运行结果",
+                    },
+                    component: () => import("@/views/teprunner/plan/CaseResult"),
+                  },
+                ],
               },
             ],
           },

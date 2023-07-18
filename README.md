@@ -1,33 +1,39 @@
 # teprunner-frontend
 
-全新2.0版本火热开发中，优先更新在Gitee，阶段性成果会同步到GitHub
+视频教程：https://space.bilibili.com/396344573/channel/series
 
-使用：1、npm install 安装依赖包，对node版本无要求，最新版本也支持
+## 下载源码
 
-2、npm run serve 启动服务
+方式①：
 
-3、后端：https://github.com/dongfanger/teprunner-backend
+```
+git clone git@github.com:dongfanger/teprunner-frontend.git
+```
 
-用户名：admin 密码：qa123456
+方式②：下载zip压缩包后解压。
 
----
+![image-20210821103333142](README/image-20210821103333142.png)
 
-历史1.0版本：https://gitee.com/dongfanger/teprunner-frontend/releases/tag/1.0
+## 安装依赖包
 
-学习资料：
+在项目目录打开cmd，执行命令：
 
-【文章】
+```
+npm install
+```
 
-[测试平台 &mdash; 测试开发刚哥 latest documentation](https://dongfanger.gitee.io/blog/chapters/%E6%B5%8B%E8%AF%95%E5%B9%B3%E5%8F%B0.html) 
+## 启动服务
 
-【视频】
+等待依赖包安装完成后，启动前端服务：
 
-https://www.bilibili.com/video/BV1Kr4y1v7br/ 
+```
+npm run serve
+```
 
-【培训】
+## 访问系统
 
-https://eqgvpqzl6c.feishu.cn/sheets/shtcnQHUotprx2eaxF5nNflMCme
+打开浏览器，输入`localhost:8080`：
 
-【微信群】
+![image2](README/image-20210306090248863.png)
 
-![](README/2023-06-09-09-07-34-image.png)
+用户名`admin`，密码`qa123456`。此时还无法登陆，需要部署[后端服务]()。

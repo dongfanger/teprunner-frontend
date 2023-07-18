@@ -28,7 +28,7 @@ axiosInstance.interceptors.request.use(config => {
   if (config.headers.Authorization !== "none") {
     const token = localStorage.getItem("token");
     if (token) {
-      config.headers.Authorization = "Bearer " + token;
+      config.headers.common["Authorization"] = "Bearer " + token;
     } else {
       clearCache(401);
     }
