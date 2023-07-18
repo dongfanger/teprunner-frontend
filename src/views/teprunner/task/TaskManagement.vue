@@ -38,39 +38,17 @@
           }" :data="tableData" style="width: 100%">
             <el-table-column prop="id" label="任务ID" width="80px" align="center" show-overflow-tooltip></el-table-column>
             <el-table-column label="任务名称" prop="name" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="caseNum" label="用例" width="50px" align="center" show-overflow-tooltip>
+            <el-table-column prop="runEnv" label="报告" width="180px" align="center"
+                             show-overflow-tooltip>
               <template slot-scope="scope">
-                <div :style="numStyle('case', scope.row.caseNum)" @click="gotoTaskResult(scope.row, 'case')">
-                  {{ scope.row.caseNum }}
+                <div :style="reportStyle()" @click="openReport(scope.row)">
+                  查看
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="failedPassed" label="成功" width="50px" align="center" show-overflow-tooltip>
-              <template slot-scope="scope">
-                <div :style="numStyle('passed', scope.row.passedNum)" @click="gotoTaskResult(scope.row, 'passed')">
-                  {{ scope.row.passedNum }}
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="failedPassed" label="失败" width="50px" align="center" show-overflow-tooltip>
-              <template slot-scope="scope">
-                <div :style="numStyle('failed', scope.row.failedNum)" @click="gotoTaskResult(scope.row, 'failed')">
-                  {{ scope.row.failedNum }}
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="failedPassed" label="错误" width="50px" align="center" show-overflow-tooltip>
-              <template slot-scope="scope">
-                <div :style="numStyle('error', scope.row.errorNum)" @click="gotoTaskResult(scope.row, 'error')">
-                  {{ scope.row.errorNum }}
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="elapsed" label="耗时" width="60px " align="center"
+            <el-table-column prop="runEnv" label="环境" width="180px" align="center"
                              show-overflow-tooltip></el-table-column>
-            <el-table-column prop="runEnv" label="环境" width="80px" align="center"
-                             show-overflow-tooltip></el-table-column>
-            <el-table-column prop="runUserNickname" label="运行人" width="80px" align="center"
+            <el-table-column prop="runUserNickname" label="运行人" width="180px" align="center"
                              show-overflow-tooltip></el-table-column>
             <el-table-column prop="runTime" label="运行时间" width="180px" align="center"
                              show-overflow-tooltip></el-table-column>
@@ -79,9 +57,8 @@
                 <div>
                   <el-button type="primary" icon="el-icon-tickets" size="mini" @click="gotoCaseList(scope.row)"
                              plain></el-button>
-                  <el-button v-if="scope.row.caseNum > 0" type="success" icon="el-icon-video-play" size="mini" plain
+                  <el-button type="success" icon="el-icon-video-play" size="mini" plain
                              @click="runTask(scope.row)" :loading="scope.row.loading"></el-button>
-                  <el-button v-else disabled icon="el-icon-video-play" size="mini" plain></el-button>
                   <el-button type="primary" icon="el-icon-edit-outline" size="mini" @click="gotoTaskEditor(scope.row)"
                              plain></el-button>
                   <el-button type="danger" icon="el-icon-document-delete" size="mini" @click="deleteTask(scope.row)"
@@ -162,22 +139,16 @@ export default {
       this.searchForm.page = 1;
       this.getTableData();
     },
-    numStyle(type, num) {
-      if (num === "0") {
-        return {};
-      }
-      if (type === "case") {
-        return {cursor: "pointer", "text-decoration": "underline"};
-      }
-      if (type === "passed") {
-        return {color: "rgb(0,153,117)", cursor: "pointer", "text-decoration": "underline"};
-      }
-      if (type === "failed") {
-        return {color: "rgb(236,76,71)", cursor: "pointer", "text-decoration": "underline"};
-      }
-      if (type === "error") {
-        return {color: "red", cursor: "pointer", "text-decoration": "underline"};
-      }
+    reportStyle() {
+      return {color: "blue", cursor: "pointer", "text-decoration": "underline"};
+    },
+    openReport(row) {
+      const newWindow = window.open('', '_blank');
+      this.$http
+          .get(`/teprunner/tasks/${row.id}/report`)
+          .then(({ data }) => {
+            newWindow.document.write(data);
+          })
     },
     runTask(row) {
       this.$set(row, "loading", true);

@@ -79,16 +79,6 @@ const routes = [
                   title: "任务运行结果",
                 },
                 component: () => import("@/views/teprunner/task/TaskResult"),
-                children: [
-                  {
-                    path: "caseResult",
-                    name: "task.caseResult",
-                    meta: {
-                      title: "用例运行结果",
-                    },
-                    component: () => import("@/views/teprunner/task/CaseResult"),
-                  },
-                ],
               },
             ],
           },
