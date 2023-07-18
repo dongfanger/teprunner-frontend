@@ -1,26 +1,27 @@
 <template>
   <div>
-    <project-env style="float: left; margin-right: 10px" v-if="$route.name === 'plan'"
-      @changeProject="changeProject"></project-env>
-    <project-env style="float: left; margin-right: 10px" v-if="$route.name === 'addPlan'" @changeProject="changeProject"
-      :showEnv="false"></project-env>
-    <project-env style="float: left; margin-right: 10px" v-if="$route.name === 'editPlan'" @changeProject="changeProject"
-      :showEnv="false" :project-disabled="true"></project-env>
-    <div class="plan-manage-index" v-if="$route.name === 'plan'">
+    <project-env style="float: left; margin-right: 10px" v-if="$route.name === 'task'"
+                 @changeProject="changeProject"></project-env>
+    <project-env style="float: left; margin-right: 10px" v-if="$route.name === 'addTask'" @changeProject="changeProject"
+                 :showEnv="false"></project-env>
+    <project-env style="float: left; margin-right: 10px" v-if="$route.name === 'editTask'"
+                 @changeProject="changeProject"
+                 :showEnv="false" :project-disabled="true"></project-env>
+    <div class="task-manage-index" v-if="$route.name === 'task'">
       <div style="float: left" class="control-list">
-        <el-button type="primary" icon="el-icon-plus" @click="addPlan">
-          新增计划
+        <el-button type="primary" icon="el-icon-plus" @click="addTask">
+          新增任务
         </el-button>
       </div>
       <div style="clear: both" class="content-info" :loading="tableLoading">
         <div class="content-header">
           <div class="info-name">
-            全部计划
+            全部任务
           </div>
         </div>
 
         <el-form size="medium" :inline="true" :model="searchForm" class="search-form" ref="searchForm">
-          <el-form-item label="计划名称">
+          <el-form-item label="任务名称">
             <el-input v-model="searchForm.name" placeholder="模糊匹配" style="width: 400px"></el-input>
           </el-form-item>
           <el-form-item>
@@ -35,55 +36,56 @@
             color: 'rgba(0, 0, 0, 0.65)',
             fontSize: '14px',
           }" :data="tableData" style="width: 100%">
-            <el-table-column prop="id" label="计划ID" width="80px" align="center" show-overflow-tooltip></el-table-column>
-            <el-table-column label="计划名称" prop="name" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="id" label="任务ID" width="80px" align="center" show-overflow-tooltip></el-table-column>
+            <el-table-column label="任务名称" prop="name" show-overflow-tooltip></el-table-column>
             <el-table-column prop="caseNum" label="用例" width="50px" align="center" show-overflow-tooltip>
               <template slot-scope="scope">
-                <div :style="numStyle('case', scope.row.caseNum)" @click="gotoPlanResult(scope.row, 'case')">
+                <div :style="numStyle('case', scope.row.caseNum)" @click="gotoTaskResult(scope.row, 'case')">
                   {{ scope.row.caseNum }}
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="failedPassed" label="成功" width="50px" align="center" show-overflow-tooltip>
               <template slot-scope="scope">
-                <div :style="numStyle('passed', scope.row.passedNum)" @click="gotoPlanResult(scope.row, 'passed')">
+                <div :style="numStyle('passed', scope.row.passedNum)" @click="gotoTaskResult(scope.row, 'passed')">
                   {{ scope.row.passedNum }}
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="failedPassed" label="失败" width="50px" align="center" show-overflow-tooltip>
               <template slot-scope="scope">
-                <div :style="numStyle('failed', scope.row.failedNum)" @click="gotoPlanResult(scope.row, 'failed')">
+                <div :style="numStyle('failed', scope.row.failedNum)" @click="gotoTaskResult(scope.row, 'failed')">
                   {{ scope.row.failedNum }}
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="failedPassed" label="错误" width="50px" align="center" show-overflow-tooltip>
               <template slot-scope="scope">
-                <div :style="numStyle('error', scope.row.errorNum)" @click="gotoPlanResult(scope.row, 'error')">
+                <div :style="numStyle('error', scope.row.errorNum)" @click="gotoTaskResult(scope.row, 'error')">
                   {{ scope.row.errorNum }}
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="elapsed" label="耗时" width="60px " align="center"
-              show-overflow-tooltip></el-table-column>
-            <el-table-column prop="runEnv" label="环境" width="60px" align="center" show-overflow-tooltip></el-table-column>
+                             show-overflow-tooltip></el-table-column>
+            <el-table-column prop="runEnv" label="环境" width="80px" align="center"
+                             show-overflow-tooltip></el-table-column>
             <el-table-column prop="runUserNickname" label="运行人" width="80px" align="center"
-              show-overflow-tooltip></el-table-column>
+                             show-overflow-tooltip></el-table-column>
             <el-table-column prop="runTime" label="运行时间" width="180px" align="center"
-              show-overflow-tooltip></el-table-column>
+                             show-overflow-tooltip></el-table-column>
             <el-table-column label="操作" width="230px">
               <template slot-scope="scope">
                 <div>
+                  <el-button type="primary" icon="el-icon-tickets" size="mini" @click="gotoCaseList(scope.row)"
+                             plain></el-button>
                   <el-button v-if="scope.row.caseNum > 0" type="success" icon="el-icon-video-play" size="mini" plain
-                    @click="runPlan(scope.row)" :loading="scope.row.loading"></el-button>
+                             @click="runTask(scope.row)" :loading="scope.row.loading"></el-button>
                   <el-button v-else disabled icon="el-icon-video-play" size="mini" plain></el-button>
-                  <el-button type="info" icon="el-icon-edit-outline" size="mini" @click="gotoPlanEditor(scope.row)"
-                    plain></el-button>
-                  <el-button type="danger" icon="el-icon-document-delete" size="mini" @click="deletePlan(scope.row)"
-                    plain></el-button>
-                  <el-button type="info" icon="el-icon-tickets" size="mini" @click="gotoCaseList(scope.row)"
-                    plain></el-button>
+                  <el-button type="primary" icon="el-icon-edit-outline" size="mini" @click="gotoTaskEditor(scope.row)"
+                             plain></el-button>
+                  <el-button type="danger" icon="el-icon-document-delete" size="mini" @click="deleteTask(scope.row)"
+                             plain></el-button>
                 </div>
               </template>
             </el-table-column>
@@ -92,7 +94,7 @@
         <div class="content-footer clear">
           <div class="block page-list self-right">
             <vue-pagination :currentPage="searchForm.page" :pageSize="searchForm.perPage" :totalNum="total"
-              @sizeChange="pageSizeChange" @currentPageChange="pageChange" />
+                            @sizeChange="pageSizeChange" @currentPageChange="pageChange"/>
           </div>
         </div>
       </div>
@@ -102,7 +104,8 @@
 </template>
 <script>
 import ProjectEnv from "@/components/ProjectEnv";
-import { isProjectExisted } from "@/utils/commonMethods";
+import {isProjectExisted} from "@/utils/commonMethods";
+
 export default {
   data() {
     return {
@@ -116,7 +119,7 @@ export default {
       tableLoading: false,
     };
   },
-  components: { ProjectEnv },
+  components: {ProjectEnv},
   methods: {
     async getTableData() {
       let keys = Object.keys(this.searchForm);
@@ -132,9 +135,9 @@ export default {
       if (projectId) {
         params.push(`projectId=${projectId}`);
       }
-      let url = "/teprunner/plans?" + params.join("&");
+      let url = "/teprunner/tasks?" + params.join("&");
       this.tableLoading = true;
-      await this.$http.get(url).then(async ({ data }) => {
+      await this.$http.get(url).then(async ({data}) => {
         this.tableData = data.items || [];
         this.total = data.totalNum;
         if (!data.items && data.totalNum > 0 && this.searchForm.page > 1) {
@@ -145,14 +148,14 @@ export default {
 
       this.tableLoading = false;
     },
-    addPlan() {
+    addTask() {
       if (!isProjectExisted()) {
-        this.$notifyMessage(`请先创建项目`, { type: "error" });
+        this.$notifyMessage(`请先创建项目`, {type: "error"});
         return;
       }
-      localStorage.removeItem("planInfo");
+      localStorage.removeItem("taskInfo");
       this.$router.push({
-        name: "addPlan",
+        name: "addTask",
       });
     },
     search() {
@@ -164,19 +167,19 @@ export default {
         return {};
       }
       if (type === "case") {
-        return { cursor: "pointer", "text-decoration": "underline" };
+        return {cursor: "pointer", "text-decoration": "underline"};
       }
       if (type === "passed") {
-        return { color: "rgb(0,153,117)", cursor: "pointer", "text-decoration": "underline" };
+        return {color: "rgb(0,153,117)", cursor: "pointer", "text-decoration": "underline"};
       }
       if (type === "failed") {
-        return { color: "rgb(236,76,71)", cursor: "pointer", "text-decoration": "underline" };
+        return {color: "rgb(236,76,71)", cursor: "pointer", "text-decoration": "underline"};
       }
       if (type === "error") {
-        return { color: "red", cursor: "pointer", "text-decoration": "underline" };
+        return {color: "red", cursor: "pointer", "text-decoration": "underline"};
       }
     },
-    runPlan(row) {
+    runTask(row) {
       this.$set(row, "loading", true);
       let curProjectEnv = JSON.parse(localStorage.getItem("curProjectEnv"));
       let curProjectId = curProjectEnv.curProjectId;
@@ -187,23 +190,23 @@ export default {
         runEnv,
         runUserNickname,
       };
-      this.$http.post(`/teprunner/plans/${row.id}/run`, params).then(({ data: { msg } }) => {
-        this.$notifyMessage(msg, { type: "success" });
+      this.$http.post(`/teprunner/tasks/${row.id}/run`, params).then(({data: {msg}}) => {
+        this.$notifyMessage(msg, {type: "success"});
         this.getTableData();
         this.$set(row, "loading", false);
       });
     },
-    deletePlan(row) {
-      this.$confirm("确认删除该计划吗？", "提示", {
+    deleteTask(row) {
+      this.$confirm("确认删除该任务吗？", "提示", {
         confirmButtonText: "确认",
         cancelButtonText: "取消",
         confirmButtonClass: "el-button--danger",
         type: "warning",
       }).then(async () => {
         this.tableLoading = true;
-        let url = `/teprunner/plans/${row.id}`;
+        let url = `/teprunner/tasks/${row.id}`;
         await this.$http.delete(url).then(async () => {
-          this.$notifyMessage("删除成功", { type: "success" });
+          this.$notifyMessage("删除成功", {type: "success"});
           await this.getTableData();
         });
         this.tableLoading = false;
@@ -228,33 +231,33 @@ export default {
       this.searchForm.page = val;
       this.getTableData();
     },
-    gotoPlanEditor(row) {
+    gotoTaskEditor(row) {
       let rowInfo = JSON.stringify(row);
-      localStorage.setItem("planInfo", rowInfo);
+      localStorage.setItem("taskInfo", rowInfo);
       this.$router.push({
-        name: "editPlan",
+        name: "editTask",
       });
     },
     gotoCaseList(row) {
       let rowInfo = JSON.stringify(row);
-      localStorage.setItem("planInfo", rowInfo);
+      localStorage.setItem("taskInfo", rowInfo);
       this.$router.push({
         name: "caseList",
       });
     },
-    gotoPlanResult(row, searchType) {
+    gotoTaskResult(row, searchType) {
       row.searchType = searchType;
       let rowInfo = JSON.stringify(row);
-      localStorage.setItem("planInfo", rowInfo);
+      localStorage.setItem("taskInfo", rowInfo);
       this.$router.push({
-        name: "planResult",
+        name: "taskResult",
       });
     },
   },
   watch: {
     $route: {
       handler(to) {
-        if (to.name === "plan") {
+        if (to.name === "task") {
           this.getTableData();
         }
       },

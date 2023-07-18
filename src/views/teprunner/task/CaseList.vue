@@ -2,13 +2,13 @@
   <div>
     <div class="content-info">
       <div class="content-header">
-        <div class="info-name">计划信息</div>
+        <div class="info-name">任务信息</div>
       </div>
-      <div class="plan-info-list">
+      <div class="task-info-list">
         <div class="info-txt clear">
           <p>
-            <span class="label">计划名称：</span>
-            {{ planInfo.name }}
+            <span class="label">任务名称：</span>
+            {{ taskInfo.name }}
           </p>
           <p>
             <span class="label">所属项目：</span>
@@ -110,15 +110,15 @@ export default {
       },
       tableData: [],
       currentPage: 1,
-      planInfo: null,
+      taskInfo: null,
       total: 0,
       projectName: "",
     };
   },
   created() {
-    let info = localStorage.getItem("planInfo");
+    let info = localStorage.getItem("taskInfo");
     info = JSON.parse(info) || {};
-    this.planInfo = {
+    this.taskInfo = {
       name: info.name,
       caseNum: info.caseNum,
       id: info.id,
@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     async getTableData() {
-      let url = `/teprunner/plans/${this.planInfo.id}/cases`;
+      let url = `/teprunner/tasks/${this.taskInfo.id}/cases`;
       let params = [];
       let keys = Object.keys(this.searchForm);
       keys.forEach(key => {
@@ -159,7 +159,7 @@ export default {
       })
         .then(async () => {
           this.isLoading = true;
-          let url = `/teprunner/plans/${this.planInfo.id}/cases/${row.caseId}`;
+          let url = `/teprunner/tasks/${this.taskInfo.id}/cases/${row.caseId}`;
           await this.$http
             .delete(url)
             .then(async res => {
@@ -189,7 +189,7 @@ export default {
     },
     addCaseSelection(data) {
       if (data && data.length) {
-        let url = `/teprunner/plans/${this.planInfo.id}/cases`;
+        let url = `/teprunner/tasks/${this.taskInfo.id}/cases`;
         let addCaseIds = data.map(item => item.id);
         let params = {
           caseIds: addCaseIds,
@@ -219,7 +219,7 @@ export default {
         page,
         keyword: keyword,
         perPage: 10,
-        excludePlanId: this.planInfo.id,
+        excludeTaskId: this.taskInfo.id,
         projectId,
       };
       let url = `/teprunner/cases`;
@@ -271,25 +271,25 @@ export default {
   width: 380px;
 }
 
-.plan-info-list {
+.task-info-list {
   margin: 0 24px;
 }
 
-.plan-name {
+.task-name {
   font-size: 16px;
   color: rgba(0, 0, 0, 0.85);
   line-height: 22px;
   margin-top: 10px;
 }
 
-.plan-info-list {
+.task-info-list {
   font-size: 14px;
   line-height: 20px;
   padding-bottom: 32px;
   color: rgba(0, 0, 0, 0.65);
 }
 
-.plan-info-list span.label {
+.task-info-list span.label {
   font-weight: 400;
   color: rgba(0, 0, 0, 0.45);
 }
@@ -324,11 +324,11 @@ export default {
   width: 0;
 }
 
-.plan-describe {
+.task-describe {
   margin-top: 15px;
 }
 
-.plan-describe .plan-describe-txt {
+.task-describe .task-describe-txt {
   margin-left: 70px;
 }
 

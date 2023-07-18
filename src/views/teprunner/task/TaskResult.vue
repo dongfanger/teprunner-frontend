@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div v-if="$route.name === 'planResult'">
+    <div v-if="$route.name === 'taskResult'">
       <div class="content-info">
         <div class="content-header">
-          <div class="info-name">计划运行结果</div>
+          <div class="info-name">任务运行结果</div>
         </div>
-        <div class="plan-info-list">
+        <div class="task-info-list">
           <div class="info-txt clear">
             <p>
-              <span class="label">计划名称：</span>
-              {{ planInfo.name }}
+              <span class="label">任务名称：</span>
+              {{ taskInfo.name }}
             </p>
             <p>
               <span class="label">所属项目：</span>
@@ -33,7 +33,7 @@
           show-overflow-tooltip></el-table-column>
         <el-table-column prop="result" label="运行结果" width="200px" align="center" show-overflow-tooltip>
           <template slot-scope="scope">
-            <div @click="gotoCaseResult(scope.row.caseId, scope.row.planId)"
+            <div @click="gotoCaseResult(scope.row.caseId, scope.row.taskId)"
               style="cursor: pointer; text-decoration: underline;">
               {{ scope.row.result }}
             </div>
@@ -54,7 +54,7 @@
 </template>
 <script>
 export default {
-  name: "PlanResult",
+  name: "TaskResult",
   data() {
     return {
       loading: false,
@@ -68,15 +68,15 @@ export default {
     };
   },
   created() {
-    let info = localStorage.getItem("planInfo");
-    this.planInfo = JSON.parse(info) || {};
+    let info = localStorage.getItem("taskInfo");
+    this.taskInfo = JSON.parse(info) || {};
     const nameMap = {
       case: "用例",
       passed: "成功",
       failed: "失败",
       error: "错误",
     };
-    this.searchTypeName = nameMap[this.planInfo.searchType];
+    this.searchTypeName = nameMap[this.taskInfo.searchType];
     let curProjectEnv = JSON.parse(localStorage.getItem("curProjectEnv"));
     this.projectName = curProjectEnv.curProjectName;
     this.getTableData();
@@ -85,9 +85,9 @@ export default {
     getTableData() {
       this.loading = true;
       let params = [];
-      params.push(`searchType=${this.planInfo.searchType}`);
+      params.push(`searchType=${this.taskInfo.searchType}`);
       this.$http
-        .get(`/teprunner/plans/${this.planInfo.id}/result?` + params.join("&"))
+        .get(`/teprunner/tasks/${this.taskInfo.id}/result?` + params.join("&"))
         .then(({ data }) => {
           if (data.items) {
             this.tableData = data.items || [];
@@ -115,14 +115,14 @@ export default {
       this.pageParams.currentPage = val;
       this.getTableData();
     },
-    gotoCaseResult(caseId, planId) {
+    gotoCaseResult(caseId, taskId) {
       let caseInfo = {
         caseId,
-        planId,
+        taskId,
       };
       localStorage.setItem("caseInfo", JSON.stringify(caseInfo));
       this.$router.push({
-        name: "plan.caseResult",
+        name: "task.caseResult",
       });
     },
   },
@@ -139,18 +139,18 @@ export default {
   width: 380px;
 }
 
-.plan-info-list {
+.task-info-list {
   margin: 0 24px;
 }
 
-.plan-name {
+.task-name {
   font-size: 16px;
   color: rgba(0, 0, 0, 0.85);
   line-height: 22px;
   margin-top: 10px;
 }
 
-.plan-info-list {
+.task-info-list {
   font-size: 14px;
   line-height: 20px;
   padding-bottom: 32px;
@@ -159,7 +159,7 @@ export default {
 
 }
 
-.plan-info-list span.label {
+.task-info-list span.label {
   font-weight: 400;
   color: rgba(0, 0, 0, 0.45);
 }

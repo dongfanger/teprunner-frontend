@@ -6,8 +6,8 @@
       </div>
     </div>
     <el-form class="form-box" label-width="124px" ref="form" :model="form" :rules="rules">
-      <el-form-item class="custom-size" prop="name" label="计划名称">
-        <el-input v-model="form.name" placeholder="请输入计划名称"></el-input>
+      <el-form-item class="custom-size" prop="name" label="任务名称">
+        <el-input v-model="form.name" placeholder="请输入任务名称"></el-input>
       </el-form-item>
       <el-form-item class="custom-size" prop="taskStatus" label="定时任务">
         <el-switch :active-text="taskText" active-value="1" active-color="rgb(22,140,0)" inactive-value="0"
@@ -77,12 +77,12 @@ export default {
         taskCrontab: "",
       },
       rules: {
-        name: [{ required: true, message: "请输入计划名称", trigger: "blur" }],
+        name: [{ required: true, message: "请输入任务名称", trigger: "blur" }],
         taskRunEnv: [{ required: true, message: "请选择运行环境", trigger: "blur" }],
         taskCrontab: [{ required: true, message: "请输入crontab表达式", trigger: "blur" }],
       },
       saving: false,
-      planId: "",
+      taskId: "",
       curEnvName: "",
       envList: [],
       curProjectId: "",
@@ -92,14 +92,14 @@ export default {
     };
   },
   created() {
-    let planInfo = localStorage.getItem("planInfo");
-    if (planInfo) {
-      planInfo = JSON.parse(planInfo);
-      this.planId = planInfo.id;
-      this.form.name = planInfo.name;
-      this.form.taskRunEnv = planInfo.taskRunEnv;
-      this.form.taskStatus = planInfo.taskStatus;
-      this.form.taskCrontab = planInfo.taskCrontab;
+    let taskInfo = localStorage.getItem("taskInfo");
+    if (taskInfo) {
+      taskInfo = JSON.parse(taskInfo);
+      this.taskId = taskInfo.id;
+      this.form.name = taskInfo.name;
+      this.form.taskRunEnv = taskInfo.taskRunEnv;
+      this.form.taskStatus = taskInfo.taskStatus;
+      this.form.taskCrontab = taskInfo.taskCrontab;
     }
     this.getProjectEnv();
   },
@@ -150,17 +150,17 @@ export default {
             taskCrontab: this.form.taskCrontab,
             projectId,
           };
-          if (this.planId) {
-            let url = `/teprunner/plans/${this.planId}`;
+          if (this.taskId) {
+            let url = `/teprunner/tasks/${this.taskId}`;
             this.$http.put(url, param).then(() => {
               this.back();
-              this.$notifyMessage("修改计划成功", { type: "success" });
+              this.$notifyMessage("修改任务成功", { type: "success" });
             });
           } else {
-            let url = `/teprunner/plans`;
+            let url = `/teprunner/tasks`;
             this.$http.post(url, param).then(() => {
               this.back();
-              this.$notifyMessage("新增计划成功", { type: "success" });
+              this.$notifyMessage("新增任务成功", { type: "success" });
             });
           }
           this.saving = false;
